@@ -20,7 +20,7 @@ ROLL=$(( RANDOM % 10 ))
 echo "==> Starting dummy test workload..."
 echo "==> Random roll: ${ROLL}"
 
-if [[ ${ROLL} -le 3 ]]; then
+if [[ ${ROLL} -le 5 ]]; then
   # Pick a random error message
   INDEX=$(( RANDOM % ${#ERRORS[@]} ))
   echo ""

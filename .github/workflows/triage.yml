@@ -20,6 +20,8 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           RUN_ID: ${{ github.event.workflow_run.id }}
           REPO: ${{ github.repository }}
+          MAX_RETRIES: 3
+          CURRENT_ATTEMPT: ${{ github.event.workflow_run.run_attempt }}
         run: |
           set -euo pipefail
 
@@ -80,11 +82,17 @@ jobs:
           echo ""
 
           if [[ "${ALL_INFRA}" == "true" ]]; then
-            echo "==> All failures are infrastructure-related. Re-running failed jobs..."
-            gh api \
-              --method POST \
-              "repos/${REPO}/actions/runs/${RUN_ID}/rerun-failed-jobs"
-            echo "==> Re-run triggered."
+            if [[ ${CURRENT_ATTEMPT} -lt ${MAX_RETRIES} ]]; then
+              echo "==> All failures are infrastructure-related. Re-running failed jobs..."
+              gh api \
+                --method POST \
+                "repos/${REPO}/actions/runs/${RUN_ID}/rerun-failed-jobs"
+              echo "==> Re-run triggered (attempt ${CURRENT_ATTEMPT}/${MAX_RETRIES})."
+            else
+              echo "==> All failures are infrastructure-related, but max retries (${MAX_RETRIES}) reached."
+              echo "==> Manual investigation required."
+              exit 1
+            fi
           else
             echo "==> Non-infrastructure failures present. Skipping auto-retry."
             echo "==> Manual investigation required."
@@ -102,7 +110,7 @@ jobs:
           HEAD_BRANCH="${{ github.event.workflow_run.head_branch }}"
           HEAD_SHA="${{ github.event.workflow_run.head_sha }}"
           
-          echo "### Triage Result" >> "${GITHUB_STEP_SUMMARY}"
+          echo "### Triage Details" >> "${GITHUB_STEP_SUMMARY}"
           echo "" >> "${GITHUB_STEP_SUMMARY}"
           echo "| Detail | Value |" >> "${GITHUB_STEP_SUMMARY}"
           echo "|--------|-------|" >> "${GITHUB_STEP_SUMMARY}"
