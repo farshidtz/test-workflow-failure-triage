@@ -56,11 +56,9 @@ jobs:
             echo ""
             echo "--- Inspecting: ${JOB_NAME} (id=${JOB_ID}) ---"
 
-            # The logs endpoint returns a 302 redirect; curl -L follows it.
-            LOGS=$(curl -fsSL \
-              -H "Authorization: Bearer ${GH_TOKEN}" \
-              -H "Accept: application/vnd.github+json" \
-              "https://api.github.com/repos/${REPO}/actions/jobs/${JOB_ID}/logs" \
+            # Download logs using gh cli
+            LOGS=$(gh api \
+              "repos/${REPO}/actions/jobs/${JOB_ID}/logs" \
               || true)
 
             if echo "${LOGS}" | grep -qE "${INFRA_PATTERN_RE}"; then
