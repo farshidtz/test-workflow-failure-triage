@@ -1,0 +1,38 @@
+name: Dummy Test Workload
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test-job-a:
+    name: Test Job A
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run dummy workload
+        run: bash scripts/dummy_test_workload.sh
+
+  test-job-b:
+    name: Test Job B
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run dummy workload
+        run: bash scripts/dummy_test_workload.sh
+
+  test-job-c:
+    name: Test Job C
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run dummy workload
+        run: bash scripts/dummy_test_workload.sh

@@ -1,0 +1,96 @@
+name: Triage Workflow Failures
+
+on:
+  workflow_run:
+    workflows: ["Dummy Test Workload"]
+    types: [completed]
+
+jobs:
+  triage:
+    name: Triage Failed Jobs
+    runs-on: ubuntu-latest
+    # Only run when the target workflow actually failed
+    if: github.event.workflow_run.conclusion == 'failure'
+    permissions:
+      actions: write # required to re-run jobs
+
+    steps:
+      - name: Classify failures and retry if infra-related
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_ID: ${{ github.event.workflow_run.id }}
+          REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+
+          # Patterns that indicate an infrastructure failure rather than a real test failure.
+          INFRA_PATTERNS="Internal 500 server error|Timeout provisioning"
+
+          echo "==> Triggered by workflow run: ${RUN_ID}"
+          echo "==> Fetching failed jobs..."
+
+          FAILED_JOBS=$(gh api \
+            "repos/${REPO}/actions/runs/${RUN_ID}/jobs" \
+            --jq '[.jobs[] | select(.conclusion == "failure")]')
+
+          JOB_COUNT=$(echo "${FAILED_JOBS}" | jq 'length')
+          echo "==> Found ${JOB_COUNT} failed job(s)"
+
+          if [[ "${JOB_COUNT}" -eq 0 ]]; then
+            echo "==> No failed jobs. Nothing to triage."
+            exit 0
+          fi
+
+          ALL_INFRA=true
+          SUMMARY=""
+
+          while IFS= read -r JOB; do
+            JOB_ID=$(echo "${JOB}" | jq -r '.id')
+            JOB_NAME=$(echo "${JOB}" | jq -r '.name')
+            echo ""
+            echo "--- Inspecting: ${JOB_NAME} (id=${JOB_ID}) ---"
+
+            # The logs endpoint returns a 302 redirect; curl -L follows it.
+            LOGS=$(curl -fsSL \
+              -H "Authorization: Bearer ${GH_TOKEN}" \
+              -H "Accept: application/vnd.github+json" \
+              "https://api.github.com/repos/${REPO}/actions/jobs/${JOB_ID}/logs" \
+              || true)
+
+            if echo "${LOGS}" | grep -qE "${INFRA_PATTERNS}"; then
+              MATCHED=$(echo "${LOGS}" | grep -oE "${INFRA_PATTERNS}" | head -1)
+              echo "==> INFRA failure: '${MATCHED}'"
+              SUMMARY="${SUMMARY}\n- [INFRA]     ${JOB_NAME}: ${MATCHED}"
+            else
+              echo "==> NON-INFRA failure — will not auto-retry"
+              SUMMARY="${SUMMARY}\n- [NON-INFRA] ${JOB_NAME}: no infra pattern matched"
+              ALL_INFRA=false
+            fi
+          done < <(echo "${FAILED_JOBS}" | jq -c '.[]')
+
+          echo ""
+          echo "==> Triage summary:"
+          echo -e "${SUMMARY}"
+          echo ""
+
+          if [[ "${ALL_INFRA}" == "true" ]]; then
+            echo "==> All failures are infrastructure-related. Re-running failed jobs..."
+            gh api \
+              --method POST \
+              "repos/${REPO}/actions/runs/${RUN_ID}/rerun-failed-jobs"
+            echo "==> Re-run triggered."
+          else
+            echo "==> Non-infrastructure failures present. Skipping auto-retry."
+            echo "==> Manual investigation required."
+            exit 1
+          fi
+
+      - name: Write job summary
+        if: always()
+        env:
+          RUN_ID: ${{ github.event.workflow_run.id }}
+          RUN_URL: ${{ github.event.workflow_run.html_url }}
+        run: |
+          echo "### Triage result for [run ${RUN_ID}](${RUN_URL})" >> "${GITHUB_STEP_SUMMARY}"
+          echo "" >> "${GITHUB_STEP_SUMMARY}"
+          echo "See the step logs above for the per-job classification." >> "${GITHUB_STEP_SUMMARY}"
