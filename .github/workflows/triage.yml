@@ -68,7 +68,7 @@ jobs:
               echo "==> INFRA failure: '${MATCHED}'"
               SUMMARY="${SUMMARY}\n- [INFRA]     ${JOB_NAME}: ${MATCHED}"
             else
-              echo "==> NON-INFRA failure — will not auto-retry"
+              echo "==> NON-INFRA failure: will not auto-retry"
               SUMMARY="${SUMMARY}\n- [NON-INFRA] ${JOB_NAME}: no infra pattern matched"
               ALL_INFRA=false
             fi
