@@ -1,4 +1,4 @@
-name: Triage Workflow Failures
+name: "Triage Workflow Failures #${{ github.event.workflow_run.run_number }}"
 
 on:
   workflow_run:

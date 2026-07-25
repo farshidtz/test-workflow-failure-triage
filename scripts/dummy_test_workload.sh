@@ -14,13 +14,13 @@ ERRORS=(
   "Internal 500 server error: dependency resolution service returned 500"
 )
 
-# Roll a die: 0-5 = infra failure, 3-9 = success
+# Roll a die: 0-3 = infra failure, 3-9 = success
 ROLL=$(( RANDOM % 10 ))
 
 echo "==> Starting dummy test workload..."
 echo "==> Random roll: ${ROLL}"
 
-if [[ ${ROLL} -le 5 ]]; then
+if [[ ${ROLL} -le 3 ]]; then
   # Pick a random error message
   INDEX=$(( RANDOM % ${#ERRORS[@]} ))
   echo ""
