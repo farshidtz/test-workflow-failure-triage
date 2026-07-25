@@ -97,21 +97,20 @@ jobs:
           RUN_NUMBER="${{ github.event.workflow_run.run_number }}"
           RUN_URL="${{ github.event.workflow_run.html_url }}"
           WORKFLOW_NAME="${{ github.event.workflow_run.name }}"
-          AUTHOR="${{ github.event.workflow_run.actor }}"
+          AUTHOR="${{ github.event.workflow_run.actor.login }}"
           ATTEMPT="${{ github.event.workflow_run.run_attempt }}"
           HEAD_BRANCH="${{ github.event.workflow_run.head_branch }}"
           HEAD_SHA="${{ github.event.workflow_run.head_sha }}"
           
-          echo "### Triage Result for Run [${RUN_NUMBER}](${RUN_URL})" >> "${GITHUB_STEP_SUMMARY}"
-          echo "" >> "${GITHUB_STEP_SUMMARY}"
-          echo "**Workflow:** \`${WORKFLOW_NAME}\`" >> "${GITHUB_STEP_SUMMARY}"
+          echo "### Triage Result" >> "${GITHUB_STEP_SUMMARY}"
           echo "" >> "${GITHUB_STEP_SUMMARY}"
           echo "| Detail | Value |" >> "${GITHUB_STEP_SUMMARY}"
           echo "|--------|-------|" >> "${GITHUB_STEP_SUMMARY}"
+          echo "| Workflow | ${WORKFLOW_NAME} |" >> "${GITHUB_STEP_SUMMARY}"
+          echo "| Run Attempt | [#${RUN_NUMBER}#${ATTEMPT}](${RUN_URL}?attempt=${ATTEMPT}) |" >> "${GITHUB_STEP_SUMMARY}"
           echo "| Author | \`${AUTHOR}\` |" >> "${GITHUB_STEP_SUMMARY}"
           echo "| Branch | \`${HEAD_BRANCH}\` |" >> "${GITHUB_STEP_SUMMARY}"
           echo "| Commit | [\`${HEAD_SHA:0:7}\`](../../commit/${HEAD_SHA}) |" >> "${GITHUB_STEP_SUMMARY}"
-          echo "| Attempt | #${ATTEMPT} |" >> "${GITHUB_STEP_SUMMARY}"
           
           # Add PR details if present
           PR_COUNT=$(echo '${{ toJson(github.event.workflow_run.pull_requests) }}' | jq 'length')

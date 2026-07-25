@@ -27,12 +27,12 @@ jobs:
       - name: Run dummy workload
         run: bash scripts/dummy_test_workload.sh
 
-  test-job-c:
-    name: Test Job C
-    runs-on: ubuntu-slim
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+  # test-job-c:
+  #   name: Test Job C
+  #   runs-on: ubuntu-slim
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v4
 
-      - name: Run dummy workload
-        run: bash scripts/dummy_test_workload.sh
+  #     - name: Run dummy workload
+  #       run: bash scripts/dummy_test_workload.sh
