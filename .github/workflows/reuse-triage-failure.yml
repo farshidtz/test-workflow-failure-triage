@@ -1,15 +1,24 @@
 name: Triage Workflow Failures
 
 on:
-  workflow_run:
-    workflows: ['**']
-    types: [completed]
+  workflow_call:
+    inputs:
+      workflow-run:
+        description: JSON of github.event.workflow_run
+        required: true
+        type: string
+      infra-patterns:
+        description: Newline-separated list of patterns that indicate an infrastructure failure
+        required: false
+        type: string
+        default: |
+          Internal 500 server error
+          Timeout provisioning
 
 jobs:
   triage:
     name: Triage Job Failures
-    # Only run when the target workflow actually failed and max retries not reached
-    if: github.event.workflow_run.conclusion == 'failure' && github.event.workflow_run.run_attempt <= 2
+    if: fromJson(inputs.workflow-run).conclusion == 'failure' && fromJson(inputs.workflow-run).run_attempt <= 2
     runs-on: ubuntu-slim
     permissions:
       actions: write # required to re-run jobs
@@ -17,20 +26,17 @@ jobs:
     steps:
       - name: Classify failures and retry if infra-related
         env:
-          GH_TOKEN: ${{ github.token }}
-          RUN_ID: ${{ github.event.workflow_run.id }}
-          REPO: ${{ github.repository }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          WORKFLOW_RUN_JSON: "${{ inputs.workflow-run }}"
+          INFRA_PATTERNS_INPUT: "${{ inputs.infra-patterns }}"
         run: |
           set -euo pipefail
 
-          # Patterns that indicate an infrastructure failure rather than a real test failure.
-          # Add or remove entries here to tune classification.
-          INFRA_PATTERNS=(
-            "Internal 500 server error"
-            "Timeout provisioning"
-          )
-          # Build a single string for grep -E
-          INFRA_PATTERN_RE=$(printf '%s\n' "${INFRA_PATTERNS[@]}" | paste -sd '|')
+          RUN_ID=$(echo "${WORKFLOW_RUN_JSON}" | jq -r '.id')
+          REPO=$(echo "${WORKFLOW_RUN_JSON}" | jq -r '.repository.full_name')
+
+          # Build grep -E pattern from newline-separated input
+          INFRA_PATTERN_RE=$(echo "${INFRA_PATTERNS_INPUT}" | grep -v '^[[:space:]]*$' | paste -sd '|')
 
           echo "==> Triggered by workflow run: ${RUN_ID}"
           echo "==> Fetching failed jobs..."
@@ -56,7 +62,6 @@ jobs:
             echo ""
             echo "--- Inspecting: ${JOB_NAME} (id=${JOB_ID}) ---"
 
-            # Download logs using gh cli
             LOGS=$(gh api \
               "repos/${REPO}/actions/jobs/${JOB_ID}/logs" \
               || true)
@@ -92,14 +97,16 @@ jobs:
       - name: Write job summary
         if: always()
         env:
-          RUN_NUMBER: ${{ github.event.workflow_run.run_number }}
-          RUN_URL: ${{ github.event.workflow_run.html_url }}
-          WORKFLOW_NAME: "${{ github.event.workflow_run.name }}"
-          AUTHOR: ${{ github.event.workflow_run.actor.login }}
-          ATTEMPT: ${{ github.event.workflow_run.run_attempt }}
-          HEAD_BRANCH: ${{ github.event.workflow_run.head_branch }}
-          HEAD_SHA: ${{ github.event.workflow_run.head_sha }}
+          WORKFLOW_RUN_JSON: "${{ inputs.workflow-run }}"
         run: |
+          RUN_NUMBER=$(echo "${WORKFLOW_RUN_JSON}" | jq -r '.run_number')
+          RUN_URL=$(echo "${WORKFLOW_RUN_JSON}" | jq -r '.html_url')
+          WORKFLOW_NAME=$(echo "${WORKFLOW_RUN_JSON}" | jq -r '.name')
+          AUTHOR=$(echo "${WORKFLOW_RUN_JSON}" | jq -r '.actor.login')
+          ATTEMPT=$(echo "${WORKFLOW_RUN_JSON}" | jq -r '.run_attempt')
+          HEAD_BRANCH=$(echo "${WORKFLOW_RUN_JSON}" | jq -r '.head_branch')
+          HEAD_SHA=$(echo "${WORKFLOW_RUN_JSON}" | jq -r '.head_sha')
+
           echo "### Triage Details" >> "${GITHUB_STEP_SUMMARY}"
           echo "" >> "${GITHUB_STEP_SUMMARY}"
           echo "| Detail | Value |" >> "${GITHUB_STEP_SUMMARY}"
@@ -109,14 +116,13 @@ jobs:
           echo "| Author | \`${AUTHOR}\` |" >> "${GITHUB_STEP_SUMMARY}"
           echo "| Branch | \`${HEAD_BRANCH}\` |" >> "${GITHUB_STEP_SUMMARY}"
           echo "| Commit | [\`${HEAD_SHA:0:7}\`](../../commit/${HEAD_SHA}) |" >> "${GITHUB_STEP_SUMMARY}"
-          
-          # Add PR details if present
-          PR_COUNT=$(echo '${{ toJson(github.event.workflow_run.pull_requests) }}' | jq 'length')
+
+          PR_COUNT=$(echo "${WORKFLOW_RUN_JSON}" | jq '.pull_requests | length')
           if [[ "${PR_COUNT}" -gt 0 ]]; then
-            PR_NUMBER=$(echo '${{ toJson(github.event.workflow_run.pull_requests) }}' | jq -r '.[0].number')
-            PR_TITLE=$(echo '${{ toJson(github.event.workflow_run.pull_requests) }}' | jq -r '.[0].title')
+            PR_NUMBER=$(echo "${WORKFLOW_RUN_JSON}" | jq -r '.pull_requests[0].number')
+            PR_TITLE=$(echo "${WORKFLOW_RUN_JSON}" | jq -r '.pull_requests[0].title')
             echo "| PR | [#${PR_NUMBER}: ${PR_TITLE}](../../pull/${PR_NUMBER}) |" >> "${GITHUB_STEP_SUMMARY}"
           fi
-          
+
           echo "" >> "${GITHUB_STEP_SUMMARY}"
           echo "See the step logs above for the per-job failure classification." >> "${GITHUB_STEP_SUMMARY}"
