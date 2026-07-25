@@ -36,3 +36,22 @@ jobs:
 
       - name: Run dummy workload
         run: bash scripts/dummy_test_workload.sh
+
+  triage:
+    name: "Triage Failed Jobs (run #${{ github.run_number }})"
+    needs: [test-job-a, test-job-b, test-job-c]
+    if: failure()
+    runs-on: ubuntu-slim
+    permissions:
+      actions: write # required to re-run jobs
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Triage
+        uses: ./.github/actions/triage
+        with:
+          patterns: |
+            Internal 500 server error
+            Timeout provisioning
