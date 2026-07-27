@@ -71,20 +71,20 @@ jobs:
             if echo "${LOGS}" | grep -qE "${INFRA_PATTERN_RE}"; then
               MATCHED=$(echo "${LOGS}" | grep -oE "${INFRA_PATTERN_RE}" | head -1)
               echo "==> INFRA failure: '${MATCHED}'"
-              SUMMARY="${SUMMARY}\n- [INFRA]     ${JOB_NAME}: ${MATCHED}"
+              SUMMARY_LINE="[INFRA]     ${JOB_NAME}: ${MATCHED}"
+              SUMMARY="${SUMMARY}\n- ${SUMMARY_LINE}"
+              echo "::warning::${SUMMARY_LINE}"
               HAS_INFRA=true
               INFRA_JOB_IDS+=("${JOB_ID}")
             else
               echo "==> NON-INFRA failure: will not auto-retry"
-              SUMMARY="${SUMMARY}\n- [NON-INFRA] ${JOB_NAME}: no infra pattern matched"
+              SUMMARY_LINE="[NON-INFRA] ${JOB_NAME}: no infra pattern matched"
+              SUMMARY="${SUMMARY}\n- ${SUMMARY_LINE}"
+              echo "::error::${SUMMARY_LINE}"
             fi
             set -o pipefail
           done < <(echo "${FAILED_JOBS}" | jq -c '.[]')
 
-          echo ""
-          echo "==> Triage summary:"
-          echo -e "${SUMMARY}"
-          echo ""
 
           echo "## Triage Summary" >> "${GITHUB_STEP_SUMMARY}"
           echo "" >> "${GITHUB_STEP_SUMMARY}"
