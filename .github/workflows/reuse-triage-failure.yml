@@ -37,7 +37,7 @@ jobs:
           REPO=$(echo "${WORKFLOW_RUN_JSON}" | jq -r '.repository.full_name')
 
           # Build grep -E pattern from newline-separated input
-          INFRA_PATTERN_RE=$(echo "${INFRA_PATTERNS_INPUT}" | grep -v '^[[:space:]]*$' | paste -sd '|')
+          INFRA_PATTERN_RE=$(printf '%s\n' "${INFRA_PATTERNS_INPUT}" | sed '/^[[:space:]]*$/d' | paste -sd '|')
 
           echo "==> Triggered by workflow run: ${RUN_ID}"
           echo "==> Fetching failed jobs..."
@@ -63,9 +63,7 @@ jobs:
             echo ""
             echo "--- Inspecting: ${JOB_NAME} (id=${JOB_ID}) ---"
 
-            LOGS=$(gh api \
-              "repos/${REPO}/actions/jobs/${JOB_ID}/logs" \
-              || true)
+            LOGS=$(gh api "repos/${REPO}/actions/jobs/${JOB_ID}/logs")
 
             if echo "${LOGS}" | grep -qE "${INFRA_PATTERN_RE}"; then
               MATCHED=$(echo "${LOGS}" | grep -oE "${INFRA_PATTERN_RE}" | head -1)
