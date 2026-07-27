@@ -71,25 +71,29 @@ jobs:
 
             if [[ -n "${INFRA_ERR}" ]]; then
               echo "INFRA failure: '${INFRA_ERR}'"
-              SUMMARY="${SUMMARY}\n⚠️ ${JOB_NAME}: ${INFRA_ERR} → retry"
+              SUMMARY="${SUMMARY}\n-⚠️ ${JOB_NAME}: ${INFRA_ERR} -> retry"
               HAS_INFRA_ERR=true
               INFRA_JOB_IDS+=("${JOB_ID}")
             else
               echo "NON-INFRA failure: will not auto-retry"
-              SUMMARY="${SUMMARY}\n❌ ${JOB_NAME}: no infra pattern matched"
+              SUMMARY="${SUMMARY}\n-❌ ${JOB_NAME}: no infra pattern matched"
             fi
           done < <(echo "${FAILED_JOBS}" | jq -c '.[]')
 
-
-          echo "## Triage Summary" >> "${GITHUB_STEP_SUMMARY}"
-          echo "" >> "${GITHUB_STEP_SUMMARY}"
-          echo -e "${SUMMARY}" >> "${GITHUB_STEP_SUMMARY}"
-          echo "" >> "${GITHUB_STEP_SUMMARY}"
+          if [[ -n "${SUMMARY}" ]]; then
+            echo "### Summary" >> "${GITHUB_STEP_SUMMARY}"
+            echo "" >> "${GITHUB_STEP_SUMMARY}"
+            echo -e "${SUMMARY}" >> "${GITHUB_STEP_SUMMARY}"
+            echo "" >> "${GITHUB_STEP_SUMMARY}"
+          fi
 
           if [[ "${HAS_INFRA_ERR}" == "true" ]]; then
             echo -e "\nInfrastructure failures detected. Re-running failed jobs..."
             if gh api --method POST "repos/${REPO}/actions/runs/${RUN_ID}/rerun-failed-jobs"; then
               echo -e "\nSuccessfully triggered rerun for failed jobs"
+
+              echo "" >> "${GITHUB_STEP_SUMMARY}"
+              echo "Reran ALL failed jobs." >> "${GITHUB_STEP_SUMMARY
             else
               echo -e "\nFailed to trigger rerun for jobs" >&2
               exit 1
@@ -113,7 +117,7 @@ jobs:
           HEAD_SHA: ${{ fromJson(inputs.workflow-run).head_sha }}
           REPO: ${{ fromJson(inputs.workflow-run).repository.full_name }}
         run: |
-          echo "### Triage Details" >> "${GITHUB_STEP_SUMMARY}"
+          echo "### Details" >> "${GITHUB_STEP_SUMMARY}"
           echo "" >> "${GITHUB_STEP_SUMMARY}"
           echo "| Detail | Value |" >> "${GITHUB_STEP_SUMMARY}"
           echo "|--------|-------|" >> "${GITHUB_STEP_SUMMARY}"
