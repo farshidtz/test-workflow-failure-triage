@@ -61,8 +61,7 @@ jobs:
           while IFS= read -r JOB; do
             JOB_ID=$(echo "${JOB}" | jq -r '.id')
             JOB_NAME=$(echo "${JOB}" | jq -r '.name')
-            echo ""
-            echo "Inspecting: ${JOB_NAME} (id=${JOB_ID})"
+            echo -e "\nInspecting: ${JOB_NAME} (id=${JOB_ID})"
 
             LOGS=$(gh api "repos/${REPO}/actions/jobs/${JOB_ID}/logs")
 
@@ -83,22 +82,16 @@ jobs:
 
 
           echo "## Triage Summary" >> "${GITHUB_STEP_SUMMARY}"
-          echo "" >> "${GITHUB_STEP_SUMMARY}"
-          echo -e "${SUMMARY}" >> "${GITHUB_STEP_SUMMARY}"
-          echo "" >> "${GITHUB_STEP_SUMMARY}"
+          echo -e "\n${SUMMARY}" >> "${GITHUB_STEP_SUMMARY}\n"
 
           if [[ "${HAS_INFRA_ERR}" == "true" ]]; then
-            echo ""
-            echo "Infrastructure failures detected. Re-running infra-related jobs..."
-            for JOB_ID in "${INFRA_JOB_IDS[@]}"; do
-              echo "Rerunning job ${JOB_ID}..."
-              if gh api --method POST "repos/${REPO}/actions/jobs/${JOB_ID}/rerun"; then
-                echo "Successfully triggered rerun for job ${JOB_ID}"
-              else
-                echo "WARNING: Failed to trigger rerun for job ${JOB_ID}" >&2
-              fi
-            done
-            echo "Reruns completed."
+            echo -e "\nInfrastructure failures detected. Re-running failed jobs..."
+            if gh api --method POST "repos/${REPO}/actions/runs/${RUN_ID}/rerun-failed-jobs"; then
+              echo -e "\nSuccessfully triggered rerun for failed jobs"
+            else
+              echo -e "\nFailed to trigger rerun for jobs" >&2
+              exit 1
+            fi
           else
             echo "No infrastructure failures detected. Skipping auto-retry."
             exit 1
@@ -135,5 +128,3 @@ jobs:
             echo "| PR | [#${PR_NUMBER}: ${PR_TITLE}](../../pull/${PR_NUMBER}) |" >> "${GITHUB_STEP_SUMMARY}"
           fi
 
-          echo "" >> "${GITHUB_STEP_SUMMARY}"
-          echo "See the step logs above for the per-job failure classification." >> "${GITHUB_STEP_SUMMARY}"
