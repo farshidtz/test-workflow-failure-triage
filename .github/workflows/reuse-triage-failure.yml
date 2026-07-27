@@ -39,23 +39,22 @@ jobs:
           # Build grep -E pattern from newline-separated input
           INFRA_PATTERN_RE=$(printf '%s\n' "${INFRA_PATTERNS_INPUT}" | sed '/^[[:space:]]*$/d' | paste -sd '|')
 
-          echo "==> Triggered by workflow run: ${RUN_ID}"
-          echo "==> Fetching failed jobs..."
+          echo "Triggered by workflow run: ${RUN_ID}"
+          echo "Fetching failed jobs..."
 
           FAILED_JOBS=$(gh api \
             "repos/${REPO}/actions/runs/${RUN_ID}/jobs" \
             --jq '[.jobs[] | select(.conclusion == "failure")]')
 
           JOB_COUNT=$(echo "${FAILED_JOBS}" | jq 'length')
-          echo "==> Found ${JOB_COUNT} failed job(s)"
+          echo "Found ${JOB_COUNT} failed job(s)"
 
           if [[ "${JOB_COUNT}" -eq 0 ]]; then
-            echo "==> No failed jobs. Nothing to triage."
+            echo "No failed jobs. Nothing to triage."
             exit 0
           fi
 
-          ALL_INFRA=true
-          HAS_INFRA=false
+          HAS_INFRA_ERR=false
           INFRA_JOB_IDS=()
           SUMMARY=""
 
@@ -63,26 +62,23 @@ jobs:
             JOB_ID=$(echo "${JOB}" | jq -r '.id')
             JOB_NAME=$(echo "${JOB}" | jq -r '.name')
             echo ""
-            echo "--- Inspecting: ${JOB_NAME} (id=${JOB_ID}) ---"
+            echo "Inspecting: ${JOB_NAME} (id=${JOB_ID})"
 
             LOGS=$(gh api "repos/${REPO}/actions/jobs/${JOB_ID}/logs")
 
             set +o pipefail
-            if echo "${LOGS}" | grep -qE "${INFRA_PATTERN_RE}"; then
-              MATCHED=$(echo "${LOGS}" | grep -oE "${INFRA_PATTERN_RE}" | head -1)
-              echo "==> INFRA failure: '${MATCHED}'"
-              SUMMARY_LINE="[INFRA]     ${JOB_NAME}: ${MATCHED}"
-              SUMMARY="${SUMMARY}\n- ${SUMMARY_LINE}"
-              echo "::warning::${SUMMARY_LINE}"
-              HAS_INFRA=true
+            INFRA_ERR=$(echo "${LOGS}" | grep -oE "${INFRA_PATTERN_RE}" | head -1)
+            set -o pipefail
+
+            if [[ -n "${INFRA_ERR}" ]]; then
+              echo "INFRA failure: '${INFRA_ERR}'"
+              SUMMARY="${SUMMARY}\n⚠️ ${JOB_NAME}: ${INFRA_ERR} → retry"
+              HAS_INFRA_ERR=true
               INFRA_JOB_IDS+=("${JOB_ID}")
             else
-              echo "==> NON-INFRA failure: will not auto-retry"
-              SUMMARY_LINE="[NON-INFRA] ${JOB_NAME}: no infra pattern matched"
-              SUMMARY="${SUMMARY}\n- ${SUMMARY_LINE}"
-              echo "::error::${SUMMARY_LINE}"
+              echo "NON-INFRA failure: will not auto-retry"
+              SUMMARY="${SUMMARY}\n❌ ${JOB_NAME}: no infra pattern matched"
             fi
-            set -o pipefail
           done < <(echo "${FAILED_JOBS}" | jq -c '.[]')
 
 
@@ -91,19 +87,20 @@ jobs:
           echo -e "${SUMMARY}" >> "${GITHUB_STEP_SUMMARY}"
           echo "" >> "${GITHUB_STEP_SUMMARY}"
 
-          if [[ "${HAS_INFRA}" == "true" ]]; then
-            echo "==> Infrastructure failures detected. Re-running infra-related jobs..."
+          if [[ "${HAS_INFRA_ERR}" == "true" ]]; then
+            echo ""
+            echo "Infrastructure failures detected. Re-running infra-related jobs..."
             for JOB_ID in "${INFRA_JOB_IDS[@]}"; do
-              echo "==> Rerunning job ${JOB_ID}..."
+              echo "Rerunning job ${JOB_ID}..."
               if gh api --method POST "repos/${REPO}/actions/jobs/${JOB_ID}/rerun"; then
-                echo "==> Successfully triggered rerun for job ${JOB_ID}"
+                echo "Successfully triggered rerun for job ${JOB_ID}"
               else
-                echo "==> WARNING: Failed to trigger rerun for job ${JOB_ID}" >&2
+                echo "WARNING: Failed to trigger rerun for job ${JOB_ID}" >&2
               fi
             done
-            echo "==> Reruns completed."
+            echo "Reruns completed."
           else
-            echo "==> No infrastructure failures detected. Skipping auto-retry."
+            echo "No infrastructure failures detected. Skipping auto-retry."
             exit 1
           fi
 
