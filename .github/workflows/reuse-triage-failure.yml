@@ -1,3 +1,4 @@
+# Reusable workflow: classifies failed jobs as infra-related or real failures, and auto-retries if all are infra-related.
 name: Triage Workflow Failures
 
 on:
@@ -12,8 +13,8 @@ on:
         required: false
         type: string
         default: |
-          Internal 500 server error
-          Timeout provisioning
+          Status: error while processing
+          MAAS reports Failed Deployment
 
 jobs:
   triage:
