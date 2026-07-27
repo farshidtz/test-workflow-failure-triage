@@ -1,4 +1,4 @@
-# Reusable workflow: classifies failed jobs as infra-related or real failures, and auto-retries if all are infra-related.
+# Reusable workflow: classifies failed jobs as infra-related or real failures, and auto-retries only infra-related ones.
 name: Triage Workflow Failures
 
 on:
@@ -22,7 +22,7 @@ jobs:
     if: fromJson(inputs.workflow-run).conclusion == 'failure' && fromJson(inputs.workflow-run).run_attempt <= 2
     runs-on: ubuntu-slim
     permissions:
-      actions: write # required to re-run jobs
+      actions: write # required to rerun individual jobs
 
     steps:
       - name: Classify failures and retry if infra-related
@@ -55,6 +55,8 @@ jobs:
           fi
 
           ALL_INFRA=true
+          HAS_INFRA=false
+          INFRA_JOB_IDS=()
           SUMMARY=""
 
           while IFS= read -r JOB; do
@@ -70,10 +72,11 @@ jobs:
               MATCHED=$(echo "${LOGS}" | grep -oE "${INFRA_PATTERN_RE}" | head -1)
               echo "==> INFRA failure: '${MATCHED}'"
               SUMMARY="${SUMMARY}\n- [INFRA]     ${JOB_NAME}: ${MATCHED}"
+              HAS_INFRA=true
+              INFRA_JOB_IDS+=("${JOB_ID}")
             else
               echo "==> NON-INFRA failure: will not auto-retry"
               SUMMARY="${SUMMARY}\n- [NON-INFRA] ${JOB_NAME}: no infra pattern matched"
-              ALL_INFRA=false
             fi
             set -o pipefail
           done < <(echo "${FAILED_JOBS}" | jq -c '.[]')
@@ -83,15 +86,24 @@ jobs:
           echo -e "${SUMMARY}"
           echo ""
 
-          if [[ "${ALL_INFRA}" == "true" ]]; then
-            echo "==> All failures are infrastructure-related. Re-running failed jobs..."
-            gh api \
-              --method POST \
-              "repos/${REPO}/actions/runs/${RUN_ID}/rerun-failed-jobs"
-            echo "==> Re-run triggered."
+          echo "## Triage Summary" >> "${GITHUB_STEP_SUMMARY}"
+          echo "" >> "${GITHUB_STEP_SUMMARY}"
+          echo -e "${SUMMARY}" >> "${GITHUB_STEP_SUMMARY}"
+          echo "" >> "${GITHUB_STEP_SUMMARY}"
+
+          if [[ "${HAS_INFRA}" == "true" ]]; then
+            echo "==> Infrastructure failures detected. Re-running infra-related jobs..."
+            for JOB_ID in "${INFRA_JOB_IDS[@]}"; do
+              echo "==> Rerunning job ${JOB_ID}..."
+              if gh api --method POST "repos/${REPO}/actions/jobs/${JOB_ID}/rerun"; then
+                echo "==> Successfully triggered rerun for job ${JOB_ID}"
+              else
+                echo "==> WARNING: Failed to trigger rerun for job ${JOB_ID}" >&2
+              fi
+            done
+            echo "==> Reruns completed."
           else
-            echo "==> Non-infrastructure failures present. Skipping auto-retry."
-            echo "==> Manual investigation required."
+            echo "==> No infrastructure failures detected. Skipping auto-retry."
             exit 1
           fi
 
