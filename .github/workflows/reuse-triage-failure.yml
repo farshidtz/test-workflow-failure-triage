@@ -89,11 +89,18 @@ jobs:
 
           if [[ "${HAS_INFRA_ERR}" == "true" ]]; then
             echo -e "\nInfrastructure failures detected. Re-running failed jobs..."
+            
+
+            # The /rerun endpoint can be used to rerun a single job, but it does not support multiple jobs in one request.
+            # A subsequent run of a single job can only be triggered once the previous run has completed.
+            #
+            # Rerun all failed jobs:
             if gh api --method POST "repos/${REPO}/actions/runs/${RUN_ID}/rerun-failed-jobs"; then
               echo -e "\nSuccessfully triggered rerun for failed jobs"
 
               echo "" >> "${GITHUB_STEP_SUMMARY}"
-              echo "Reran ALL failed jobs." >> "${GITHUB_STEP_SUMMARY}"
+              echo "> [!NOTE]" >> "${GITHUB_STEP_SUMMARY}"
+              echo "> On a failure, all failed jobs are rerun, not just infra-related ones." >> "${GITHUB_STEP_SUMMARY}"
             else
               echo -e "\nFailed to trigger rerun for jobs" >&2
               exit 1
