@@ -1,0 +1,791 @@
+2026-07-26T19:37:49.2573548Z Current runner version: '2.335.1'
+2026-07-26T19:37:49.2578663Z Runner name: 'private-openstack-amd64-noble-small-ps7-1-2bb1348b5719'
+2026-07-26T19:37:49.2579575Z Runner group name: 'private-endpoint'
+2026-07-26T19:37:49.2580535Z Machine name: 'github-runner'
+2026-07-26T19:37:49.2583026Z ##[group]GITHUB_TOKEN Permissions
+2026-07-26T19:37:49.2585631Z Actions: read
+2026-07-26T19:37:49.2586130Z Contents: read
+2026-07-26T19:37:49.2586593Z Metadata: read
+2026-07-26T19:37:49.2587053Z PullRequests: read
+2026-07-26T19:37:49.2587529Z ##[endgroup]
+2026-07-26T19:37:49.2589610Z Secret source: Actions
+2026-07-26T19:37:49.2590504Z Prepare workflow directory
+2026-07-26T19:37:49.3078252Z Prepare all required actions
+2026-07-26T19:37:49.3113393Z Getting action download info
+2026-07-26T19:37:49.7688728Z Download action repository 'actions/checkout@v6' (SHA:d23441a48e516b6c34aea4fa41551a30e30af803)
+2026-07-26T19:37:50.3140660Z Download action repository 'canonical/testflinger@main' (SHA:86e2beb02b45331f2964dada369bc4d24c70a727)
+2026-07-26T19:37:51.2134927Z Getting action download info
+2026-07-26T19:37:51.2884922Z Uses: canonical/inference-snaps-testing/.github/workflows/test-snap.yaml@refs/heads/v1 (82a439fdb72f4316b51bbeaecc7f22a7a61c238a)
+2026-07-26T19:37:51.2891091Z ##[group] Inputs
+2026-07-26T19:37:51.2892255Z   testflinger-client-id: inference-snaps
+2026-07-26T19:37:51.2893611Z   job-queue: mir-intel-noble
+2026-07-26T19:37:51.2894800Z   provision-data: distro: noble
+2026-07-26T19:37:51.2895974Z   snap-name: smollm2
+2026-07-26T19:37:51.2897047Z   snap-channel: latest/edge/pr-1
+2026-07-26T19:37:51.2898525Z   devmode: false
+2026-07-26T19:37:51.2899582Z   install-nvidia-driver-version: 
+2026-07-26T19:37:51.2901034Z   install-intel-npu-driver: false
+2026-07-26T19:37:51.2902253Z   snap-connections: 
+2026-07-26T19:37:51.2903278Z   expected-engine: 
+2026-07-26T19:37:51.2904272Z   select-engine: cpu
+2026-07-26T19:37:51.2905290Z   test-chat-tps: true
+2026-07-26T19:37:51.2906315Z   expected-tps: 
+2026-07-26T19:37:51.2907339Z   test-image-prompt: false
+2026-07-26T19:37:51.2908423Z ##[endgroup]
+2026-07-26T19:37:51.2910339Z Complete job name: trigger-tests / test (mir-intel-noble, distro: noble, cpu, true) / cpu (mir-intel-noble)
+2026-07-26T19:37:51.3426956Z A job started hook has been configured by the self-hosted runner administrator
+2026-07-26T19:37:51.3630554Z ##[group]Run '/home/ubuntu/actions-runner/pre-job.sh'
+2026-07-26T19:37:51.3650910Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-07-26T19:37:51.3652613Z ##[endgroup]
+2026-07-26T19:37:51.3977105Z <13>Jul 26 19:37:51 ubuntu: IS_INTERNAL_PR: true (head: canonical/smollm2-snap-staging, base: canonical/smollm2-snap-staging)
+2026-07-26T19:37:51.3983097Z <13>Jul 26 19:37:51 ubuntu: Internal PR detected - contributor check skipped
+2026-07-26T19:37:51.3990867Z <13>Jul 26 19:37:51 ubuntu: Contributor check passed - proceeding to execute jobs
+2026-07-26T19:37:51.4017648Z <13>Jul 26 19:37:51 ubuntu: OpenTelemetry collector is enabled.
+2026-07-26T19:37:51.4027755Z <13>Jul 26 19:37:51 ubuntu: Additional OpenTelemetery collector configuration can be added.
+2026-07-26T19:37:51.4045832Z <13>Jul 26 19:37:51 ubuntu: The exporter endpoint is at the environment variable ACTION_OTEL_EXPORTER_OTLP_ENDPOINT.
+2026-07-26T19:37:51.4367559Z receivers:
+2026-07-26T19:37:51.4371603Z   hostmetrics:
+2026-07-26T19:37:51.4373565Z     collection_interval: 10s
+2026-07-26T19:37:51.4378795Z     scrapers:
+2026-07-26T19:37:51.4380755Z       cpu:
+2026-07-26T19:37:51.4381809Z         metrics:
+2026-07-26T19:37:51.4383148Z           system.cpu.logical.count:
+2026-07-26T19:37:51.4384511Z             enabled: true
+2026-07-26T19:37:51.4385954Z           system.cpu.physical.count:
+2026-07-26T19:37:51.4387486Z             enabled: true
+2026-07-26T19:37:51.4388829Z       memory:
+2026-07-26T19:37:51.4389954Z       disk:
+2026-07-26T19:37:51.4391009Z       filesystem:
+2026-07-26T19:37:51.4392522Z       network:
+2026-07-26T19:37:51.4393584Z       load:
+2026-07-26T19:37:51.4394613Z   otlp:
+2026-07-26T19:37:51.4395807Z     protocols:
+2026-07-26T19:37:51.4397392Z       grpc:
+2026-07-26T19:37:51.4398465Z         endpoint: 0.0.0.0:44317
+2026-07-26T19:37:51.4400080Z       http:
+2026-07-26T19:37:51.4401174Z         endpoint: 0.0.0.0:44318
+2026-07-26T19:37:51.4402566Z   loki:
+2026-07-26T19:37:51.4403586Z     protocols:
+2026-07-26T19:37:51.4404804Z       http:
+2026-07-26T19:37:51.4405853Z         endpoint: 0.0.0.0:43100
+2026-07-26T19:37:51.4407306Z     use_incoming_timestamp: true
+2026-07-26T19:37:51.4408756Z   filelog/aproxy:
+2026-07-26T19:37:51.4410032Z     include:
+2026-07-26T19:37:51.4411104Z       - /var/log/syslog
+2026-07-26T19:37:51.4413961Z     operators:
+2026-07-26T19:37:51.4415452Z       - type: filter
+2026-07-26T19:37:51.4416692Z         expr: 'body not matches "aproxy.aproxy"'
+2026-07-26T19:37:51.4418326Z processors:
+2026-07-26T19:37:51.4419656Z   attributes/self_hosted_runner_github_labels:
+2026-07-26T19:37:51.4423383Z     actions:
+2026-07-26T19:37:51.4424352Z       - key: service.name
+2026-07-26T19:37:51.4425403Z         action: upsert
+2026-07-26T19:37:51.4426440Z         value: "self-hosted-runner"
+2026-07-26T19:37:51.4427623Z       - key: github.repository
+2026-07-26T19:37:51.4433137Z         action: upsert
+2026-07-26T19:37:51.4434620Z         value: "canonical/smollm2-snap-staging"
+2026-07-26T19:37:51.4436248Z       - key: github.runner
+2026-07-26T19:37:51.4437644Z         action: upsert
+2026-07-26T19:37:51.4439376Z         value: "private-openstack-amd64-noble-small-ps7-1-2bb1348b5719"
+2026-07-26T19:37:51.4441670Z       - key: github.workflow
+2026-07-26T19:37:51.4442920Z         action: upsert
+2026-07-26T19:37:51.4444247Z         value: "PR Label"
+2026-07-26T19:37:51.4445600Z       - key: github.job
+2026-07-26T19:37:51.4446788Z         action: upsert
+2026-07-26T19:37:51.4448120Z         value: "test-snap"
+2026-07-26T19:37:51.4449339Z       - key: github.run.id
+2026-07-26T19:37:51.4450854Z         action: upsert
+2026-07-26T19:37:51.4452177Z         value: "30217039037"
+2026-07-26T19:37:51.4453432Z       - key: github.run.attempt
+2026-07-26T19:37:51.4454872Z         action: upsert
+2026-07-26T19:37:51.4456160Z         value: "1"
+2026-07-26T19:37:51.4457262Z       - key: host.arch
+2026-07-26T19:37:51.4458820Z         action: upsert
+2026-07-26T19:37:51.4460161Z         value: "x86_64"
+2026-07-26T19:37:51.4461417Z   resource/self_hosted_runner_github_labels:
+2026-07-26T19:37:51.4462848Z     attributes:
+2026-07-26T19:37:51.4465178Z       - key: service.name
+2026-07-26T19:37:51.4466242Z         action: upsert
+2026-07-26T19:37:51.4467266Z         value: "self-hosted-runner"
+2026-07-26T19:37:51.4468816Z       - key: github.repository
+2026-07-26T19:37:51.4470818Z         action: upsert
+2026-07-26T19:37:51.4472463Z         value: "canonical/smollm2-snap-staging"
+2026-07-26T19:37:51.4474260Z       - key: github.runner
+2026-07-26T19:37:51.4475684Z         action: upsert
+2026-07-26T19:37:51.4477395Z         value: "private-openstack-amd64-noble-small-ps7-1-2bb1348b5719"
+2026-07-26T19:37:51.4479550Z       - key: github.workflow
+2026-07-26T19:37:51.4481089Z         action: upsert
+2026-07-26T19:37:51.4482635Z         value: "PR Label"
+2026-07-26T19:37:51.4484044Z       - key: github.job
+2026-07-26T19:37:51.4485239Z         action: upsert
+2026-07-26T19:37:51.4486531Z         value: "test-snap"
+2026-07-26T19:37:51.4487741Z       - key: github.run.id
+2026-07-26T19:37:51.4489206Z         action: upsert
+2026-07-26T19:37:51.4490688Z         value: "30217039037"
+2026-07-26T19:37:51.4491912Z       - key: github.run.attempt
+2026-07-26T19:37:51.4493329Z         action: upsert
+2026-07-26T19:37:51.4494449Z         value: "1"
+2026-07-26T19:37:51.4495689Z       - key: host.arch
+2026-07-26T19:37:51.4496812Z         action: upsert
+2026-07-26T19:37:51.4498091Z         value: "x86_64"
+2026-07-26T19:37:51.4499514Z   resource/self_hosted_runner_github_aproxy_labels:
+2026-07-26T19:37:51.4501271Z     attributes:
+2026-07-26T19:37:51.4502520Z       - key: service.name
+2026-07-26T19:37:51.4503712Z         action: upsert
+2026-07-26T19:37:51.4505004Z         value: "aproxy"
+2026-07-26T19:37:51.4506616Z   transform/self_hosted_runner_loki_labels:
+2026-07-26T19:37:51.4508172Z     log_statements:
+2026-07-26T19:37:51.4509268Z       - context: resource
+2026-07-26T19:37:51.4510555Z         statements:
+2026-07-26T19:37:51.4511634Z           - >
+2026-07-26T19:37:51.4512921Z             set(resource.attributes["loki.resource.labels"],
+2026-07-26T19:37:51.4514750Z             Concat([resource.attributes["loki.resource.labels"],
+2026-07-26T19:37:51.4518028Z             ", service.name, github.repository, github.runner, github.workflow, github.job, github.run.id, github.run.attempt, host.arch"], ""))
+2026-07-26T19:37:51.4520996Z             where resource.attributes["loki.resource.labels"] != nil
+2026-07-26T19:37:51.4522480Z           - >
+2026-07-26T19:37:51.4523575Z             set(resource.attributes["loki.resource.labels"],
+2026-07-26T19:37:51.4526377Z             "service.name, github.repository, github.runner, github.workflow, github.job, github.run.id, github.run.attempt, host.arch")
+2026-07-26T19:37:51.4529171Z             where resource.attributes["loki.resource.labels"] == nil
+2026-07-26T19:37:51.4530828Z   batch:
+2026-07-26T19:37:51.4531694Z exporters:
+2026-07-26T19:37:51.4532602Z   otlp/self_hosted_runner:
+2026-07-26T19:37:51.4533956Z     endpoint: otlp.actions.self-hosted-runners.internal:14317
+2026-07-26T19:37:51.4535454Z     tls:
+2026-07-26T19:37:51.4536315Z       insecure: true
+2026-07-26T19:37:51.4537253Z service:
+2026-07-26T19:37:51.4538271Z   pipelines:
+2026-07-26T19:37:51.4539158Z     metrics:
+2026-07-26T19:37:51.4540158Z       receivers: [hostmetrics]
+2026-07-26T19:37:51.4541608Z       processors: [attributes/self_hosted_runner_github_labels, batch]
+2026-07-26T19:37:51.4543237Z       exporters: [otlp/self_hosted_runner]
+2026-07-26T19:37:51.4544445Z     metrics/otlp:
+2026-07-26T19:37:51.4545391Z       receivers: [otlp]
+2026-07-26T19:37:51.4546750Z       processors: [attributes/self_hosted_runner_github_labels, batch]
+2026-07-26T19:37:51.4548375Z       exporters: [otlp/self_hosted_runner]
+2026-07-26T19:37:51.4549580Z     logs/otlp:
+2026-07-26T19:37:51.4550583Z       receivers: [otlp]
+2026-07-26T19:37:51.4551562Z       processors:
+2026-07-26T19:37:51.4552918Z         - resource/self_hosted_runner_github_labels
+2026-07-26T19:37:51.4554341Z         - transform/self_hosted_runner_loki_labels
+2026-07-26T19:37:51.4555657Z         - batch
+2026-07-26T19:37:51.4556627Z       exporters: [otlp/self_hosted_runner]
+2026-07-26T19:37:51.4557830Z     logs/loki:
+2026-07-26T19:37:51.4558735Z       receivers: [loki]
+2026-07-26T19:37:51.4559826Z       processors:
+2026-07-26T19:37:51.4560880Z         - resource/self_hosted_runner_github_labels
+2026-07-26T19:37:51.4562319Z         - transform/self_hosted_runner_loki_labels
+2026-07-26T19:37:51.4564122Z         - batch
+2026-07-26T19:37:51.4565158Z       exporters: [otlp/self_hosted_runner]
+2026-07-26T19:37:51.4566400Z     logs/aproxy:
+2026-07-26T19:37:51.4567359Z       receivers: [filelog/aproxy]
+2026-07-26T19:37:51.4568476Z       processors:
+2026-07-26T19:37:51.4569534Z         - resource/self_hosted_runner_github_labels
+2026-07-26T19:37:51.4588715Z         - resource/self_hosted_runner_github_aproxy_labels
+2026-07-26T19:37:51.4590481Z         - transform/self_hosted_runner_loki_labels
+2026-07-26T19:37:51.4592149Z         - batch
+2026-07-26T19:37:51.4593241Z       exporters: [otlp/self_hosted_runner]
+2026-07-26T19:37:51.4594579Z     traces:
+2026-07-26T19:37:51.4595579Z       receivers: [otlp]
+2026-07-26T19:37:51.4597009Z       processors: [resource/self_hosted_runner_github_labels, batch]
+2026-07-26T19:37:51.4598810Z       exporters: [otlp/self_hosted_runner]
+2026-07-26T19:37:52.9330970Z opentelemetry-collector enabled
+2026-07-26T19:37:53.1405489Z Started.
+2026-07-26T19:37:53.1460825Z <13>Jul 26 19:37:53 ubuntu: A private docker registry is setup as a dockerhub mirror for this self-hosted runner.
+2026-07-26T19:37:53.1481024Z <13>Jul 26 19:37:53 ubuntu: The docker daemon on this self-hosted runner is configured to use the dockerhub mirror.
+2026-07-26T19:37:53.1500741Z <13>Jul 26 19:37:53 ubuntu: The URL to the private docker registry is in the DOCKERHUB_MIRROR environment variable.
+2026-07-26T19:37:53.1520836Z <13>Jul 26 19:37:53 ubuntu: For microk8s, see instructions here: https://microk8s.io/docs/dockerhub-limits
+2026-07-26T19:37:53.1566293Z <13>Jul 26 19:37:53 ubuntu: Running custom pre-job script
+2026-07-26T19:37:53.2852131Z ##[group]Run echo ::notice::\
+2026-07-26T19:37:53.2852565Z echo ::notice::\
+2026-07-26T19:37:53.2852856Z Testflinger \
+2026-07-26T19:37:53.2853152Z queue: mir-intel-noble, \
+2026-07-26T19:37:53.2853447Z  \
+2026-07-26T19:37:53.2853700Z Snap \
+2026-07-26T19:37:53.2853963Z Name: smollm2, \
+2026-07-26T19:37:53.2854261Z Channel: latest/edge/pr-1, \
+2026-07-26T19:37:53.2854597Z Devmode: false, \
+2026-07-26T19:37:53.2854867Z  \
+2026-07-26T19:37:53.2855106Z Prerequisites \
+2026-07-26T19:37:53.2855376Z NVIDIA driver: , \
+2026-07-26T19:37:53.2855688Z Intel NPU driver: false, \
+2026-07-26T19:37:53.2855993Z Snap connections: , \
+2026-07-26T19:37:53.2856268Z  \
+2026-07-26T19:37:53.2856509Z Engine \
+2026-07-26T19:37:53.2856758Z Expected: , \
+2026-07-26T19:37:53.2857022Z Select: cpu, \
+2026-07-26T19:37:53.2857295Z  \
+2026-07-26T19:37:53.2857549Z Chat prompt \
+2026-07-26T19:37:53.2857817Z Perform test: true, \
+2026-07-26T19:37:53.2858098Z Expect TPS: , \
+2026-07-26T19:37:53.2858379Z  \
+2026-07-26T19:37:53.2858660Z Image prompt \
+2026-07-26T19:37:53.2858932Z Perform test: false, \
+2026-07-26T19:37:53.2875320Z shell: /usr/bin/bash -e {0}
+2026-07-26T19:37:53.2875629Z env:
+2026-07-26T19:37:53.2875919Z   REUSABLE_WORKFLOW_REPO: inference-snaps-testing
+2026-07-26T19:37:53.2876688Z   REUSABLE_JOB_FILE: /home/ubuntu/actions-runner/_work/smollm2-snap-staging/smollm2-snap-staging/inference-snaps-testing/testflinger-jobs/test-snap.yaml
+2026-07-26T19:37:53.2877383Z ##[endgroup]
+2026-07-26T19:37:53.2967363Z ##[notice]Testflinger queue: mir-intel-noble, Snap Name: smollm2, Channel: latest/edge/pr-1, Devmode: false, Prerequisites NVIDIA driver: , Intel NPU driver: false, Snap connections: , Engine Expected: , Select: cpu, Chat prompt Perform test: true, Expect TPS: , Image prompt Perform test: false,
+2026-07-26T19:37:53.3109234Z ##[group]Run actions/checkout@v6
+2026-07-26T19:37:53.3109582Z with:
+2026-07-26T19:37:53.3110032Z   repository: canonical/inference-snaps-testing
+2026-07-26T19:37:53.3110398Z   path: inference-snaps-testing
+2026-07-26T19:37:53.3113073Z   token: ***
+2026-07-26T19:37:53.3113325Z   ssh-strict: true
+2026-07-26T19:37:53.3113579Z   ssh-user: git
+2026-07-26T19:37:53.3113838Z   persist-credentials: true
+2026-07-26T19:37:53.3114119Z   clean: true
+2026-07-26T19:37:53.3114383Z   sparse-checkout-cone-mode: true
+2026-07-26T19:37:53.3114676Z   fetch-depth: 1
+2026-07-26T19:37:53.3114919Z   fetch-tags: false
+2026-07-26T19:37:53.3115194Z   show-progress: true
+2026-07-26T19:37:53.3115443Z   lfs: false
+2026-07-26T19:37:53.3115680Z   submodules: false
+2026-07-26T19:37:53.3115933Z   set-safe-directory: true
+2026-07-26T19:37:53.3116221Z   allow-unsafe-pr-checkout: false
+2026-07-26T19:37:53.3116512Z env:
+2026-07-26T19:37:53.3116786Z   REUSABLE_WORKFLOW_REPO: inference-snaps-testing
+2026-07-26T19:37:53.3117555Z   REUSABLE_JOB_FILE: /home/ubuntu/actions-runner/_work/smollm2-snap-staging/smollm2-snap-staging/inference-snaps-testing/testflinger-jobs/test-snap.yaml
+2026-07-26T19:37:53.3118268Z ##[endgroup]
+2026-07-26T19:37:53.6952290Z Syncing repository: canonical/inference-snaps-testing
+2026-07-26T19:37:53.6953657Z ##[group]Getting Git version info
+2026-07-26T19:37:53.6954300Z Working directory is '/home/ubuntu/actions-runner/_work/smollm2-snap-staging/smollm2-snap-staging/inference-snaps-testing'
+2026-07-26T19:37:53.6979947Z [command]/usr/bin/git version
+2026-07-26T19:37:53.7075438Z git version 2.43.0
+2026-07-26T19:37:53.7130777Z ##[endgroup]
+2026-07-26T19:37:53.7154306Z Temporarily overriding HOME='/home/ubuntu/actions-runner/_work/_temp/72623637-ac40-4c89-8c94-43281f564f34' before making global git config changes
+2026-07-26T19:37:53.7162074Z Adding repository directory to the temporary git global config as a safe directory
+2026-07-26T19:37:53.7166276Z [command]/usr/bin/git config --global --add safe.directory /home/ubuntu/actions-runner/_work/smollm2-snap-staging/smollm2-snap-staging/inference-snaps-testing
+2026-07-26T19:37:53.7241633Z ##[group]Determining repository object format
+2026-07-26T19:37:54.0351826Z ##[endgroup]
+2026-07-26T19:37:54.0360962Z ##[group]Initializing the repository
+2026-07-26T19:37:54.0378814Z [command]/usr/bin/git init /home/ubuntu/actions-runner/_work/smollm2-snap-staging/smollm2-snap-staging/inference-snaps-testing
+2026-07-26T19:37:54.0534863Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-07-26T19:37:54.0554515Z hint: is subject to change. To configure the initial branch name to use in all
+2026-07-26T19:37:54.0555358Z hint: of your new repositories, which will suppress this warning, call:
+2026-07-26T19:37:54.0556018Z hint: 
+2026-07-26T19:37:54.0556489Z hint: 	git config --global init.defaultBranch <name>
+2026-07-26T19:37:54.0556975Z hint: 
+2026-07-26T19:37:54.0557448Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-07-26T19:37:54.0558118Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-07-26T19:37:54.0558659Z hint: 
+2026-07-26T19:37:54.0559101Z hint: 	git branch -m <name>
+2026-07-26T19:37:54.0570198Z Initialized empty Git repository in /home/ubuntu/actions-runner/_work/smollm2-snap-staging/smollm2-snap-staging/inference-snaps-testing/.git/
+2026-07-26T19:37:54.0622026Z [command]/usr/bin/git remote add origin https://github.com/canonical/inference-snaps-testing
+2026-07-26T19:37:54.0674864Z ##[endgroup]
+2026-07-26T19:37:54.0675799Z ##[group]Disabling automatic garbage collection
+2026-07-26T19:37:54.0686418Z [command]/usr/bin/git config --local gc.auto 0
+2026-07-26T19:37:54.0731709Z ##[endgroup]
+2026-07-26T19:37:54.0732255Z ##[group]Setting up auth
+2026-07-26T19:37:54.0732809Z Removing SSH command configuration
+2026-07-26T19:37:54.0739968Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-07-26T19:37:54.0819423Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-07-26T19:37:54.1554788Z Removing HTTP extra header
+2026-07-26T19:37:54.1599279Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-07-26T19:37:54.1662309Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-07-26T19:37:54.3044402Z Removing includeIf entries pointing to credentials config files
+2026-07-26T19:37:54.3045995Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-07-26T19:37:54.3048070Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-07-26T19:37:54.3392931Z [command]/usr/bin/git config --file /home/ubuntu/actions-runner/_work/_temp/git-credentials-061ad5a7-49ae-4986-b666-e78b8fc585a8.config http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-07-26T19:37:54.3395710Z [command]/usr/bin/git config --local includeIf.gitdir:/home/ubuntu/actions-runner/_work/smollm2-snap-staging/smollm2-snap-staging/inference-snaps-testing/.git.path /home/ubuntu/actions-runner/_work/_temp/git-credentials-061ad5a7-49ae-4986-b666-e78b8fc585a8.config
+2026-07-26T19:37:54.3449862Z [command]/usr/bin/git config --local includeIf.gitdir:/home/ubuntu/actions-runner/_work/smollm2-snap-staging/smollm2-snap-staging/inference-snaps-testing/.git/worktrees/*.path /home/ubuntu/actions-runner/_work/_temp/git-credentials-061ad5a7-49ae-4986-b666-e78b8fc585a8.config
+2026-07-26T19:37:54.3486695Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/inference-snaps-testing/.git.path /github/runner_temp/git-credentials-061ad5a7-49ae-4986-b666-e78b8fc585a8.config
+2026-07-26T19:37:54.3523696Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/inference-snaps-testing/.git/worktrees/*.path /github/runner_temp/git-credentials-061ad5a7-49ae-4986-b666-e78b8fc585a8.config
+2026-07-26T19:37:54.3557981Z ##[endgroup]
+2026-07-26T19:37:54.3558604Z ##[group]Determining the default branch
+2026-07-26T19:37:54.3559078Z Retrieving the default branch name
+2026-07-26T19:37:54.7046003Z Default branch 'v1'
+2026-07-26T19:37:54.7047002Z ##[endgroup]
+2026-07-26T19:37:54.7047633Z ##[group]Fetching the repository
+2026-07-26T19:37:54.7048292Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +refs/heads/v1:refs/remotes/origin/v1
+2026-07-26T19:37:55.3641040Z From https://github.com/canonical/inference-snaps-testing
+2026-07-26T19:37:55.3641456Z  * [new branch]      v1         -> origin/v1
+2026-07-26T19:37:55.3642359Z ##[endgroup]
+2026-07-26T19:37:55.3642723Z ##[group]Determining the checkout info
+2026-07-26T19:37:55.3643125Z ##[endgroup]
+2026-07-26T19:37:55.3643382Z [command]/usr/bin/git sparse-checkout disable
+2026-07-26T19:37:55.3703662Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-07-26T19:37:55.3745010Z ##[group]Checking out the ref
+2026-07-26T19:37:55.3746747Z [command]/usr/bin/git checkout --progress --force -B v1 refs/remotes/origin/v1
+2026-07-26T19:37:55.3825102Z Switched to a new branch 'v1'
+2026-07-26T19:37:55.3826507Z branch 'v1' set up to track 'origin/v1'.
+2026-07-26T19:37:55.3836979Z ##[endgroup]
+2026-07-26T19:37:55.3892973Z [command]/usr/bin/git log -1 --format=%H
+2026-07-26T19:37:55.3930883Z 82a439fdb72f4316b51bbeaecc7f22a7a61c238a
+2026-07-26T19:37:55.4114092Z ##[group]Run envsubst \
+2026-07-26T19:37:55.4114361Z envsubst \
+2026-07-26T19:37:55.4114982Z   < /home/ubuntu/actions-runner/_work/smollm2-snap-staging/smollm2-snap-staging/inference-snaps-testing/testflinger-jobs/test-snap.yaml \
+2026-07-26T19:37:55.4115987Z   > /home/ubuntu/actions-runner/_work/smollm2-snap-staging/smollm2-snap-staging/inference-snaps-testing/testflinger-jobs/test-snap.yaml.temp
+2026-07-26T19:37:55.4117445Z mv /home/ubuntu/actions-runner/_work/smollm2-snap-staging/smollm2-snap-staging/inference-snaps-testing/testflinger-jobs/test-snap.yaml.temp /home/ubuntu/actions-runner/_work/smollm2-snap-staging/smollm2-snap-staging/inference-snaps-testing/testflinger-jobs/test-snap.yaml
+2026-07-26T19:37:55.4133090Z shell: /usr/bin/bash -e {0}
+2026-07-26T19:37:55.4133342Z env:
+2026-07-26T19:37:55.4133585Z   REUSABLE_WORKFLOW_REPO: inference-snaps-testing
+2026-07-26T19:37:55.4134328Z   REUSABLE_JOB_FILE: /home/ubuntu/actions-runner/_work/smollm2-snap-staging/smollm2-snap-staging/inference-snaps-testing/testflinger-jobs/test-snap.yaml
+2026-07-26T19:37:55.4134995Z   JOB_QUEUE: mir-intel-noble
+2026-07-26T19:37:55.4135238Z   SNAP_NAME: smollm2
+2026-07-26T19:37:55.4135469Z   SNAP_CHANNEL: latest/edge/pr-1
+2026-07-26T19:37:55.4135718Z   DEVMODE: false
+2026-07-26T19:37:55.4135943Z   INSTALL_NVIDIA_DRIVER_VERSION: 
+2026-07-26T19:37:55.4136210Z   INSTALL_INTEL_NPU_DRIVER: false
+2026-07-26T19:37:55.4136455Z   SNAP_CONNECTIONS: 
+2026-07-26T19:37:55.4136668Z   EXPECTED_ENGINE: 
+2026-07-26T19:37:55.4136889Z   SELECT_ENGINE: cpu
+2026-07-26T19:37:55.4137105Z   TEST_CHAT_TPS: true
+2026-07-26T19:37:55.4137326Z   EXPECTED_TPS: 
+2026-07-26T19:37:55.4137553Z   TEST_IMAGE_PROMPT: false
+2026-07-26T19:37:55.4137784Z ##[endgroup]
+2026-07-26T19:37:55.4246178Z ##[group]Run yq eval '
+2026-07-26T19:37:55.4246430Z yq eval '
+2026-07-26T19:37:55.4246729Z .provision_data = (strenv(PROVISION_DATA) | from_yaml) |
+2026-07-26T19:37:55.4247091Z .provision_data style=""
+2026-07-26T19:37:55.4247891Z ' -i /home/ubuntu/actions-runner/_work/smollm2-snap-staging/smollm2-snap-staging/inference-snaps-testing/testflinger-jobs/test-snap.yaml
+2026-07-26T19:37:55.4264083Z shell: /usr/bin/bash -e {0}
+2026-07-26T19:37:55.4264335Z env:
+2026-07-26T19:37:55.4264578Z   REUSABLE_WORKFLOW_REPO: inference-snaps-testing
+2026-07-26T19:37:55.4265291Z   REUSABLE_JOB_FILE: /home/ubuntu/actions-runner/_work/smollm2-snap-staging/smollm2-snap-staging/inference-snaps-testing/testflinger-jobs/test-snap.yaml
+2026-07-26T19:37:55.4265963Z   PROVISION_DATA: distro: noble
+2026-07-26T19:37:55.4266214Z ##[endgroup]
+2026-07-26T19:37:55.5014263Z ##[group]Run cat /home/ubuntu/actions-runner/_work/smollm2-snap-staging/smollm2-snap-staging/inference-snaps-testing/testflinger-jobs/test-snap.yaml
+2026-07-26T19:37:55.5015454Z cat /home/ubuntu/actions-runner/_work/smollm2-snap-staging/smollm2-snap-staging/inference-snaps-testing/testflinger-jobs/test-snap.yaml
+2026-07-26T19:37:55.5030905Z shell: /usr/bin/bash -e {0}
+2026-07-26T19:37:55.5031162Z env:
+2026-07-26T19:37:55.5031407Z   REUSABLE_WORKFLOW_REPO: inference-snaps-testing
+2026-07-26T19:37:55.5032110Z   REUSABLE_JOB_FILE: /home/ubuntu/actions-runner/_work/smollm2-snap-staging/smollm2-snap-staging/inference-snaps-testing/testflinger-jobs/test-snap.yaml
+2026-07-26T19:37:55.5032894Z ##[endgroup]
+2026-07-26T19:37:55.5078817Z job_queue: mir-intel-noble
+2026-07-26T19:37:55.5079300Z test_data:
+2026-07-26T19:37:55.5080246Z   # Copy test scripts to the Testflinger Agent
+2026-07-26T19:37:55.5081682Z   attachments:
+2026-07-26T19:37:55.5082549Z     - local: "../agent-scripts"
+2026-07-26T19:37:55.5083385Z       agent: "agent-scripts"
+2026-07-26T19:37:55.5084152Z   # Run commands on the Testflinger Agent
+2026-07-26T19:37:55.5084711Z   test_cmds: |
+2026-07-26T19:37:55.5088617Z     #!/bin/bash -eu
+2026-07-26T19:37:55.5091510Z 
+2026-07-26T19:37:55.5092700Z     # The outer testflinger action uses groups for logging. Close its existing one, so we can use our own.
+2026-07-26T19:37:55.5097160Z     echo "::endgroup::"
+2026-07-26T19:37:55.5098323Z 
+2026-07-26T19:37:55.5099349Z     echo "::group::Setting configuration variables"
+2026-07-26T19:37:55.5100829Z       # These vars are replaced by envsubst in the caller.
+2026-07-26T19:37:55.5101296Z       export SNAP_NAME=smollm2
+2026-07-26T19:37:55.5101987Z       export SNAP_CHANNEL=latest/edge/pr-1
+2026-07-26T19:37:55.5103091Z       export DEVMODE=false
+2026-07-26T19:37:55.5104028Z       export INSTALL_NVIDIA_DRIVER_VERSION=
+2026-07-26T19:37:55.5105749Z       export INSTALL_INTEL_NPU_DRIVER=false
+2026-07-26T19:37:55.5107377Z       export SNAP_CONNECTIONS=
+2026-07-26T19:37:55.5108307Z 
+2026-07-26T19:37:55.5108539Z       export EXPECTED_ENGINE=
+2026-07-26T19:37:55.5109481Z       export SELECT_ENGINE=cpu
+2026-07-26T19:37:55.5110404Z 
+2026-07-26T19:37:55.5110651Z       export TEST_CHAT_TPS=true
+2026-07-26T19:37:55.5111530Z       export EXPECTED_TPS=
+2026-07-26T19:37:55.5112359Z 
+2026-07-26T19:37:55.5112574Z       export TEST_IMAGE_PROMPT=false
+2026-07-26T19:37:55.5113583Z 
+2026-07-26T19:37:55.5114000Z     echo "::endgroup::"
+2026-07-26T19:37:55.5114759Z 
+2026-07-26T19:37:55.5115283Z     ./attachments/test/agent-scripts/main.sh
+2026-07-26T19:37:55.5116045Z 
+2026-07-26T19:37:55.5116444Z     echo "::group::Testflinger cleanup"
+2026-07-26T19:37:55.5117384Z provision_data:
+2026-07-26T19:37:55.5118141Z   distro: noble
+2026-07-26T19:37:55.5378462Z ##[group]Run canonical/testflinger/.github/actions/submit@main
+2026-07-26T19:37:55.5378808Z with:
+2026-07-26T19:37:55.5379005Z   poll: true
+2026-07-26T19:37:55.5379581Z   job-path: /home/ubuntu/actions-runner/_work/smollm2-snap-staging/smollm2-snap-staging/inference-snaps-testing/testflinger-jobs/test-snap.yaml
+2026-07-26T19:37:55.5380540Z   client-id: inference-snaps
+2026-07-26T19:37:55.5380903Z   secret-key: ***
+2026-07-26T19:37:55.5381116Z   dry-run: false
+2026-07-26T19:37:55.5381340Z   server: testflinger.canonical.com
+2026-07-26T19:37:55.5381597Z env:
+2026-07-26T19:37:55.5381834Z   REUSABLE_WORKFLOW_REPO: inference-snaps-testing
+2026-07-26T19:37:55.5382682Z   REUSABLE_JOB_FILE: /home/ubuntu/actions-runner/_work/smollm2-snap-staging/smollm2-snap-staging/inference-snaps-testing/testflinger-jobs/test-snap.yaml
+2026-07-26T19:37:55.5383312Z ##[endgroup]
+2026-07-26T19:37:55.5470913Z ##[group]Run mkdir -p _tmp_testflinger-actions/.github/actions
+2026-07-26T19:37:55.5471391Z mkdir -p _tmp_testflinger-actions/.github/actions
+2026-07-26T19:37:55.5471767Z cp -r "$ACTION_PATH/../testflinger-setup" \
+2026-07-26T19:37:55.5472465Z       _tmp_testflinger-actions/.github/actions/testflinger-setup
+2026-07-26T19:37:55.5492335Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-07-26T19:37:55.5492661Z env:
+2026-07-26T19:37:55.5492904Z   REUSABLE_WORKFLOW_REPO: inference-snaps-testing
+2026-07-26T19:37:55.5493609Z   REUSABLE_JOB_FILE: /home/ubuntu/actions-runner/_work/smollm2-snap-staging/smollm2-snap-staging/inference-snaps-testing/testflinger-jobs/test-snap.yaml
+2026-07-26T19:37:55.5494472Z   ACTION_PATH: /home/ubuntu/actions-runner/_work/_actions/canonical/testflinger/main/.github/actions/submit
+2026-07-26T19:37:55.5494941Z ##[endgroup]
+2026-07-26T19:37:55.5666651Z Prepare all required actions
+2026-07-26T19:37:55.5787998Z ##[group]Run ./_tmp_testflinger-actions/.github/actions/testflinger-setup
+2026-07-26T19:37:55.5788377Z with:
+2026-07-26T19:37:55.5788602Z   server: testflinger.canonical.com
+2026-07-26T19:37:55.5788860Z env:
+2026-07-26T19:37:55.5789091Z   REUSABLE_WORKFLOW_REPO: inference-snaps-testing
+2026-07-26T19:37:55.5789999Z   REUSABLE_JOB_FILE: /home/ubuntu/actions-runner/_work/smollm2-snap-staging/smollm2-snap-staging/inference-snaps-testing/testflinger-jobs/test-snap.yaml
+2026-07-26T19:37:55.5790642Z ##[endgroup]
+2026-07-26T19:37:55.5821845Z ##[group]Run echo "::group::Test connection to Testflinger server"
+2026-07-26T19:37:55.5822367Z echo "::group::Test connection to Testflinger server"
+2026-07-26T19:37:55.5823014Z STATUS=$(curl --stderr error.log -Ivw "%{http_code}\n" -o /dev/null $SERVER/v1/ -H "X-Request-ID: $REQUEST_ID")
+2026-07-26T19:37:55.5823595Z ERROR=$?
+2026-07-26T19:37:55.5823894Z if [ ! $ERROR -eq 0 ]; then
+2026-07-26T19:37:55.5824298Z   echo "Unable to ping Testflinger server at $SERVER"
+2026-07-26T19:37:55.5824707Z   cat error.log
+2026-07-26T19:37:55.5825022Z   exit $ERROR
+2026-07-26T19:37:55.5825340Z elif [ ! $STATUS -eq 200 ]; then
+2026-07-26T19:37:55.5825768Z   echo "Failed server ping at $SERVER, error status: $STATUS"
+2026-07-26T19:37:55.5826194Z   cat error.log
+2026-07-26T19:37:55.5826499Z   exit $STATUS
+2026-07-26T19:37:55.5826797Z else
+2026-07-26T19:37:55.5827152Z   echo "Successful server ping at $SERVER, status: $STATUS"
+2026-07-26T19:37:55.5827571Z fi
+2026-07-26T19:37:55.5827857Z echo "::endgroup::"
+2026-07-26T19:37:55.5842569Z shell: /usr/bin/bash {0}
+2026-07-26T19:37:55.5842934Z env:
+2026-07-26T19:37:55.5843262Z   REUSABLE_WORKFLOW_REPO: inference-snaps-testing
+2026-07-26T19:37:55.5844045Z   REUSABLE_JOB_FILE: /home/ubuntu/actions-runner/_work/smollm2-snap-staging/smollm2-snap-staging/inference-snaps-testing/testflinger-jobs/test-snap.yaml
+2026-07-26T19:37:55.5844838Z   SERVER: https://testflinger.canonical.com
+2026-07-26T19:37:55.5845403Z   REQUEST_ID: 30217039037
+2026-07-26T19:37:55.5845710Z ##[endgroup]
+2026-07-26T19:37:55.5888635Z ##[group]Test connection to Testflinger server
+2026-07-26T19:37:55.7024756Z Successful server ping at https://testflinger.canonical.com, status: 200
+2026-07-26T19:37:55.7027056Z ##[endgroup]
+2026-07-26T19:37:55.7052494Z ##[group]Run echo "::group::Install prerequisites"
+2026-07-26T19:37:55.7052864Z echo "::group::Install prerequisites"
+2026-07-26T19:37:55.7053183Z sudo snap install testflinger-cli
+2026-07-26T19:37:55.7053476Z sudo snap install jq
+2026-07-26T19:37:55.7053738Z sudo snap install yq
+2026-07-26T19:37:55.7054153Z echo "::endgroup::"
+2026-07-26T19:37:55.7070449Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-07-26T19:37:55.7070787Z env:
+2026-07-26T19:37:55.7071032Z   REUSABLE_WORKFLOW_REPO: inference-snaps-testing
+2026-07-26T19:37:55.7071754Z   REUSABLE_JOB_FILE: /home/ubuntu/actions-runner/_work/smollm2-snap-staging/smollm2-snap-staging/inference-snaps-testing/testflinger-jobs/test-snap.yaml
+2026-07-26T19:37:55.7072658Z ##[endgroup]
+2026-07-26T19:37:55.7121201Z ##[group]Install prerequisites
+2026-07-26T19:37:58.7178523Z testflinger-cli 20260703 from Canonical Certification Team (ce-certification-qa) installed
+2026-07-26T19:38:17.1923849Z jq 1.5+dfsg-1 from Michael Vogt (mvo*) installed
+2026-07-26T19:38:20.6143939Z yq v4.49.2 from Mike Farah (mikefarah) installed
+2026-07-26T19:38:20.6174815Z ##[endgroup]
+2026-07-26T19:38:20.6228106Z ##[group]Run rm -rf ./_tmp_testflinger-actions
+2026-07-26T19:38:20.6228471Z rm -rf ./_tmp_testflinger-actions
+2026-07-26T19:38:20.6243810Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-07-26T19:38:20.6244142Z env:
+2026-07-26T19:38:20.6244384Z   REUSABLE_WORKFLOW_REPO: inference-snaps-testing
+2026-07-26T19:38:20.6245075Z   REUSABLE_JOB_FILE: /home/ubuntu/actions-runner/_work/smollm2-snap-staging/smollm2-snap-staging/inference-snaps-testing/testflinger-jobs/test-snap.yaml
+2026-07-26T19:38:20.6245749Z ##[endgroup]
+2026-07-26T19:38:20.6311486Z ##[group]Run echo "::group::Create job file (if required)"
+2026-07-26T19:38:20.6311863Z echo "::group::Create job file (if required)"
+2026-07-26T19:38:20.6312179Z if [ -n "$JOB_PATH" ]; then
+2026-07-26T19:38:20.6312473Z   echo "job=$JOB_PATH" >> "$GITHUB_OUTPUT"
+2026-07-26T19:38:20.6312762Z else
+2026-07-26T19:38:20.6312998Z   # write the inline job text to a file
+2026-07-26T19:38:20.6313442Z   FILE=$WORKSPACE/tmp_job.yaml
+2026-07-26T19:38:20.6313724Z   printf "%s" "$JOB" > "$FILE"
+2026-07-26T19:38:20.6314020Z   if [[ $(cat "$FILE" | wc -w) == 0 ]]; then
+2026-07-26T19:38:20.6314411Z     echo 'Neither of the `job` or `job-path` inputs have been specified'
+2026-07-26T19:38:20.6314782Z     exit 1
+2026-07-26T19:38:20.6314994Z   fi
+2026-07-26T19:38:20.6315222Z   echo "job=$FILE" >> "$GITHUB_OUTPUT"
+2026-07-26T19:38:20.6315509Z fi
+2026-07-26T19:38:20.6315725Z echo "::endgroup::"
+2026-07-26T19:38:20.6329637Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-07-26T19:38:20.6330146Z env:
+2026-07-26T19:38:20.6330383Z   REUSABLE_WORKFLOW_REPO: inference-snaps-testing
+2026-07-26T19:38:20.6331076Z   REUSABLE_JOB_FILE: /home/ubuntu/actions-runner/_work/smollm2-snap-staging/smollm2-snap-staging/inference-snaps-testing/testflinger-jobs/test-snap.yaml
+2026-07-26T19:38:20.6331713Z   JOB: 
+2026-07-26T19:38:20.6332239Z   JOB_PATH: /home/ubuntu/actions-runner/_work/smollm2-snap-staging/smollm2-snap-staging/inference-snaps-testing/testflinger-jobs/test-snap.yaml
+2026-07-26T19:38:20.6332996Z   WORKSPACE: /home/ubuntu/actions-runner/_work/smollm2-snap-staging/smollm2-snap-staging
+2026-07-26T19:38:20.6333421Z ##[endgroup]
+2026-07-26T19:38:20.6365793Z ##[group]Create job file (if required)
+2026-07-26T19:38:20.6369474Z ##[endgroup]
+2026-07-26T19:38:20.6400309Z ##[group]Run echo "::group::Display job file"
+2026-07-26T19:38:20.6400771Z echo "::group::Display job file"
+2026-07-26T19:38:20.6401047Z cat "$JOB"
+2026-07-26T19:38:20.6401270Z echo "::endgroup::"
+2026-07-26T19:38:20.6414587Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-07-26T19:38:20.6414922Z env:
+2026-07-26T19:38:20.6415172Z   REUSABLE_WORKFLOW_REPO: inference-snaps-testing
+2026-07-26T19:38:20.6415866Z   REUSABLE_JOB_FILE: /home/ubuntu/actions-runner/_work/smollm2-snap-staging/smollm2-snap-staging/inference-snaps-testing/testflinger-jobs/test-snap.yaml
+2026-07-26T19:38:20.6416825Z   JOB: /home/ubuntu/actions-runner/_work/smollm2-snap-staging/smollm2-snap-staging/inference-snaps-testing/testflinger-jobs/test-snap.yaml
+2026-07-26T19:38:20.6417586Z ##[endgroup]
+2026-07-26T19:38:20.6448070Z ##[group]Display job file
+2026-07-26T19:38:20.6457260Z job_queue: mir-intel-noble
+2026-07-26T19:38:20.6457543Z test_data:
+2026-07-26T19:38:20.6458872Z   # Copy test scripts to the Testflinger Agent
+2026-07-26T19:38:20.6459992Z   attachments:
+2026-07-26T19:38:20.6460362Z     - local: "../agent-scripts"
+2026-07-26T19:38:20.6461167Z       agent: "agent-scripts"
+2026-07-26T19:38:20.6461635Z   # Run commands on the Testflinger Agent
+2026-07-26T19:38:20.6461929Z   test_cmds: |
+2026-07-26T19:38:20.6462150Z     #!/bin/bash -eu
+2026-07-26T19:38:20.6462284Z 
+2026-07-26T19:38:20.6462594Z     # The outer testflinger action uses groups for logging. Close its existing one, so we can use our own.
+2026-07-26T19:38:20.6463093Z     echo "::endgroup::"
+2026-07-26T19:38:20.6463237Z 
+2026-07-26T19:38:20.6463366Z     echo "::group::Setting configuration variables"
+2026-07-26T19:38:20.6463721Z       # These vars are replaced by envsubst in the caller.
+2026-07-26T19:38:20.6464039Z       export SNAP_NAME=smollm2
+2026-07-26T19:38:20.6464301Z       export SNAP_CHANNEL=latest/edge/pr-1
+2026-07-26T19:38:20.6464589Z       export DEVMODE=false
+2026-07-26T19:38:20.6464841Z       export INSTALL_NVIDIA_DRIVER_VERSION=
+2026-07-26T19:38:20.6465129Z       export INSTALL_INTEL_NPU_DRIVER=false
+2026-07-26T19:38:20.6465413Z       export SNAP_CONNECTIONS=
+2026-07-26T19:38:20.6465564Z 
+2026-07-26T19:38:20.6465668Z       export EXPECTED_ENGINE=
+2026-07-26T19:38:20.6465909Z       export SELECT_ENGINE=cpu
+2026-07-26T19:38:20.6466060Z 
+2026-07-26T19:38:20.6466156Z       export TEST_CHAT_TPS=true
+2026-07-26T19:38:20.6466400Z       export EXPECTED_TPS=
+2026-07-26T19:38:20.6466546Z 
+2026-07-26T19:38:20.6466648Z       export TEST_IMAGE_PROMPT=false
+2026-07-26T19:38:20.6466820Z 
+2026-07-26T19:38:20.6466909Z     echo "::endgroup::"
+2026-07-26T19:38:20.6467048Z 
+2026-07-26T19:38:20.6467166Z     ./attachments/test/agent-scripts/main.sh
+2026-07-26T19:38:20.6467356Z 
+2026-07-26T19:38:20.6467562Z     echo "::group::Testflinger cleanup"
+2026-07-26T19:38:20.6467823Z provision_data:
+2026-07-26T19:38:20.6468030Z   distro: noble
+2026-07-26T19:38:20.6468409Z ##[endgroup]
+2026-07-26T19:38:20.6486872Z ##[group]Run echo "::group::Determine which phases to run for this job"
+2026-07-26T19:38:20.6487335Z echo "::group::Determine which phases to run for this job"
+2026-07-26T19:38:20.6487709Z for phase in provision test reserve; do
+2026-07-26T19:38:20.6488016Z   export KEY="${phase}_data"
+2026-07-26T19:38:20.6488376Z   if /snap/bin/yq -e 'has(strenv(KEY))' "${JOB}" > /dev/null 2>&1; then
+2026-07-26T19:38:20.6488785Z     echo "${phase}=true" | tee -a "$GITHUB_OUTPUT"
+2026-07-26T19:38:20.6489086Z   else
+2026-07-26T19:38:20.6489333Z     echo "${phase}=false" | tee -a "$GITHUB_OUTPUT"
+2026-07-26T19:38:20.6489629Z   fi
+2026-07-26T19:38:20.6490194Z done
+2026-07-26T19:38:20.6490406Z echo "::endgroup::"
+2026-07-26T19:38:20.6503770Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-07-26T19:38:20.6504087Z env:
+2026-07-26T19:38:20.6504325Z   REUSABLE_WORKFLOW_REPO: inference-snaps-testing
+2026-07-26T19:38:20.6505162Z   REUSABLE_JOB_FILE: /home/ubuntu/actions-runner/_work/smollm2-snap-staging/smollm2-snap-staging/inference-snaps-testing/testflinger-jobs/test-snap.yaml
+2026-07-26T19:38:20.6506171Z   JOB: /home/ubuntu/actions-runner/_work/smollm2-snap-staging/smollm2-snap-staging/inference-snaps-testing/testflinger-jobs/test-snap.yaml
+2026-07-26T19:38:20.6506756Z ##[endgroup]
+2026-07-26T19:38:20.6539048Z ##[group]Determine which phases to run for this job
+2026-07-26T19:38:21.0980677Z provision=true
+2026-07-26T19:38:21.1970420Z test=true
+2026-07-26T19:38:21.2962101Z reserve=false
+2026-07-26T19:38:21.2964143Z ##[endgroup]
+2026-07-26T19:38:21.3003583Z ##[group]Run echo "::group::Submit job to the Testflinger server"
+2026-07-26T19:38:21.3004260Z echo "::group::Submit job to the Testflinger server"
+2026-07-26T19:38:21.3004580Z 
+2026-07-26T19:38:21.3004914Z # check that the auth solution has the right number of params defined
+2026-07-26T19:38:21.3005325Z AUTH_ARGS_COUNT=0
+2026-07-26T19:38:21.3005644Z [[ -n $TESTFLINGER_CLIENT_ID ]] && ((++AUTH_ARGS_COUNT))
+2026-07-26T19:38:21.3006049Z [[ -n $TESTFLINGER_SECRET_KEY ]] && ((++AUTH_ARGS_COUNT))
+2026-07-26T19:38:21.3006384Z case $AUTH_ARGS_COUNT in
+2026-07-26T19:38:21.3006650Z     0) TESTFLINGER_CLIENT_ID=() ;;
+2026-07-26T19:38:21.3006980Z     2) echo "Testflinger credentials present." ;;
+2026-07-26T19:38:21.3007483Z     1) echo "::error::Both 'client-id' and 'secret-key' must be provided or neither"; exit 1 ;;
+2026-07-26T19:38:21.3007909Z esac
+2026-07-26T19:38:21.3008106Z 
+2026-07-26T19:38:21.3008305Z JOB_ID=$(\
+2026-07-26T19:38:21.3008540Z   testflinger submit --quiet \
+2026-07-26T19:38:21.3008903Z   ${RELATIVE_TO:+--attachments-relative-to "$RELATIVE_TO"} \
+2026-07-26T19:38:21.3009247Z   "$JOB" \
+2026-07-26T19:38:21.3009450Z )
+2026-07-26T19:38:21.3009843Z echo "id=$JOB_ID" >> $GITHUB_OUTPUT
+2026-07-26T19:38:21.3010122Z echo "::endgroup::"
+2026-07-26T19:38:21.3010403Z echo "::notice::Testflinger job id: $JOB_ID"
+2026-07-26T19:38:21.3025278Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-07-26T19:38:21.3025609Z env:
+2026-07-26T19:38:21.3025851Z   REUSABLE_WORKFLOW_REPO: inference-snaps-testing
+2026-07-26T19:38:21.3026551Z   REUSABLE_JOB_FILE: /home/ubuntu/actions-runner/_work/smollm2-snap-staging/smollm2-snap-staging/inference-snaps-testing/testflinger-jobs/test-snap.yaml
+2026-07-26T19:38:21.3027262Z   TESTFLINGER_SERVER: https://testflinger.canonical.com
+2026-07-26T19:38:21.3027599Z   RELATIVE_TO: 
+2026-07-26T19:38:21.3027834Z   TESTFLINGER_CLIENT_ID: inference-snaps
+2026-07-26T19:38:21.3028487Z   TESTFLINGER_SECRET_KEY: ***
+2026-07-26T19:38:21.3029079Z   JOB: /home/ubuntu/actions-runner/_work/smollm2-snap-staging/smollm2-snap-staging/inference-snaps-testing/testflinger-jobs/test-snap.yaml
+2026-07-26T19:38:21.3029855Z ##[endgroup]
+2026-07-26T19:38:21.3063264Z ##[group]Submit job to the Testflinger server
+2026-07-26T19:38:21.3064370Z Testflinger credentials present.
+2026-07-26T19:38:28.4107627Z ##[endgroup]
+2026-07-26T19:38:28.4109220Z ##[notice]Testflinger job id: 01250141-2585-4dff-92b0-20ce2cfad5a2
+2026-07-26T19:38:28.4140474Z ##[group]Run echo "::group:: Tracking $JOB_ID setup phase"
+2026-07-26T19:38:28.4140864Z echo "::group:: Tracking $JOB_ID setup phase"
+2026-07-26T19:38:28.4141184Z # poll setup phase
+2026-07-26T19:38:28.4141557Z PYTHONUNBUFFERED=1 testflinger poll $JOB_ID --phase setup 2>/dev/null
+2026-07-26T19:38:28.4141957Z echo "::endgroup::"
+2026-07-26T19:38:28.4142194Z 
+2026-07-26T19:38:28.4142482Z echo "::group::Retrieve phase results to determine exit status"
+2026-07-26T19:38:28.4142944Z EXIT_STATUS=$(testflinger results $JOB_ID | jq .setup_status)
+2026-07-26T19:38:28.4143405Z [[ $EXIT_STATUS -ne 0 ]] && echo "::error::Testflinger setup phase failed"
+2026-07-26T19:38:28.4143776Z echo "::endgroup::"
+2026-07-26T19:38:28.4144185Z exit $EXIT_STATUS
+2026-07-26T19:38:28.4158932Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-07-26T19:38:28.4159252Z env:
+2026-07-26T19:38:28.4159491Z   REUSABLE_WORKFLOW_REPO: inference-snaps-testing
+2026-07-26T19:38:28.4160738Z   REUSABLE_JOB_FILE: /home/ubuntu/actions-runner/_work/smollm2-snap-staging/smollm2-snap-staging/inference-snaps-testing/testflinger-jobs/test-snap.yaml
+2026-07-26T19:38:28.4161475Z   TESTFLINGER_SERVER: https://testflinger.canonical.com
+2026-07-26T19:38:28.4161823Z   TESTFLINGER_CLIENT_ID: inference-snaps
+2026-07-26T19:38:28.4162239Z   TESTFLINGER_SECRET_KEY: ***
+2026-07-26T19:38:28.4162677Z   JOB_ID: 01250141-2585-4dff-92b0-20ce2cfad5a2
+2026-07-26T19:38:28.4162948Z ##[endgroup]
+2026-07-26T19:38:28.4198907Z ##[group] Tracking 01250141-2585-4dff-92b0-20ce2cfad5a2 setup phase
+2026-07-26T19:38:40.6819403Z *****************************************************************
+2026-07-26T19:38:40.6820312Z * Starting testflinger setup phase on dell-inspiron-5502-c28053 *
+2026-07-26T19:38:40.6821230Z *****************************************************************
+2026-07-26T19:38:40.6821604Z Cleaning up container if it exists...
+2026-07-26T19:38:40.6821924Z State 'running' lasted 0 minutes 10 seconds
+2026-07-26T19:38:40.7006797Z ##[endgroup]
+2026-07-26T19:38:40.7007404Z ##[group]Retrieve phase results to determine exit status
+2026-07-26T19:38:42.2297359Z ##[endgroup]
+2026-07-26T19:38:42.2328755Z ##[group]Run echo "::group:: Tracking $JOB_ID provision phase"
+2026-07-26T19:38:42.2329175Z echo "::group:: Tracking $JOB_ID provision phase"
+2026-07-26T19:38:42.2329580Z # poll provision phase
+2026-07-26T19:38:42.2330141Z PYTHONUNBUFFERED=1 testflinger poll $JOB_ID --phase provision 2>/dev/null
+2026-07-26T19:38:42.2330558Z echo "::endgroup::"
+2026-07-26T19:38:42.2330794Z 
+2026-07-26T19:38:42.2331081Z echo "::group::Retrieve phase results to determine exit status"
+2026-07-26T19:38:42.2331557Z EXIT_STATUS=$(testflinger results $JOB_ID | jq .provision_status)
+2026-07-26T19:38:42.2332038Z [[ $EXIT_STATUS -ne 0 ]] && echo "::error::Testflinger provision phase failed"
+2026-07-26T19:38:42.2332421Z echo "::endgroup::"
+2026-07-26T19:38:42.2332667Z exit $EXIT_STATUS
+2026-07-26T19:38:42.2348069Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-07-26T19:38:42.2348406Z env:
+2026-07-26T19:38:42.2348708Z   REUSABLE_WORKFLOW_REPO: inference-snaps-testing
+2026-07-26T19:38:42.2349429Z   REUSABLE_JOB_FILE: /home/ubuntu/actions-runner/_work/smollm2-snap-staging/smollm2-snap-staging/inference-snaps-testing/testflinger-jobs/test-snap.yaml
+2026-07-26T19:38:42.2350425Z   TESTFLINGER_SERVER: https://testflinger.canonical.com
+2026-07-26T19:38:42.2350771Z   TESTFLINGER_CLIENT_ID: inference-snaps
+2026-07-26T19:38:42.2351187Z   TESTFLINGER_SECRET_KEY: ***
+2026-07-26T19:38:42.2351449Z   JOB_ID: 01250141-2585-4dff-92b0-20ce2cfad5a2
+2026-07-26T19:38:42.2351724Z ##[endgroup]
+2026-07-26T19:38:42.2410981Z ##[group] Tracking 01250141-2585-4dff-92b0-20ce2cfad5a2 provision phase
+2026-07-26T19:38:44.0174342Z *********************************************************************
+2026-07-26T19:38:44.0174910Z * Starting testflinger provision phase on dell-inspiron-5502-c28053 *
+2026-07-26T19:38:44.0175375Z *********************************************************************
+2026-07-26T19:38:54.3858254Z 2026-07-26 19:38:43,009 dell-inspiron-5502-c28053 INFO: DEVICE CONNECTOR: Running pre-provision hook
+2026-07-26T19:38:54.3858990Z 2026-07-26 19:38:43,009 dell-inspiron-5502-c28053 INFO: DEVICE CONNECTOR: Attempt to power cycle the control host.
+2026-07-26T19:39:15.6383868Z 2026-07-26 19:39:13,148 dell-inspiron-5502-c28053 INFO: DEVICE CONNECTOR: Running control host reboot script
+2026-07-26T19:39:15.6385690Z 2026-07-26 19:39:13,148 dell-inspiron-5502-c28053 INFO: DEVICE CONNECTOR: Executing: snmpset -c private -v 2c 10.102.132.214 1.3.6.1.2.1.105.1.1.1.3.0.14 i 2
+2026-07-26T19:39:15.6387425Z 2026-07-26 19:39:13,374 dell-inspiron-5502-c28053 INFO: DEVICE CONNECTOR: Executing: sleep 5
+2026-07-26T19:39:25.7137384Z 2026-07-26 19:39:18,377 dell-inspiron-5502-c28053 INFO: DEVICE CONNECTOR: Executing: snmpset -c private -v 2c 10.102.132.214 1.3.6.1.2.1.105.1.1.1.3.0.14 i 1
+2026-07-26T19:39:25.7138462Z 2026-07-26 19:39:18,593 dell-inspiron-5502-c28053 INFO: DEVICE CONNECTOR: Waiting for the REST API on control host 10.102.246.115
+2026-07-26T19:40:37.4696184Z 2026-07-26 19:40:31,433 dell-inspiron-5502-c28053 INFO: DEVICE CONNECTOR: Setting up provisioning on control host 10.102.246.115
+2026-07-26T19:40:37.4697014Z 2026-07-26 19:40:34,470 dell-inspiron-5502-c28053 INFO: DEVICE CONNECTOR: MAAS: Reading node's block device information
+2026-07-26T19:40:47.5914597Z 2026-07-26 19:40:37,268 dell-inspiron-5502-c28053 INFO: DEVICE CONNECTOR: BEGIN provision
+2026-07-26T19:40:47.5915228Z 2026-07-26 19:40:37,268 dell-inspiron-5502-c28053 INFO: DEVICE CONNECTOR: Provisioning device
+2026-07-26T19:40:47.5915915Z 2026-07-26 19:40:37,271 dell-inspiron-5502-c28053 INFO: DEVICE CONNECTOR: MAAS: Fixing EFI boot order before provisioning
+2026-07-26T19:40:47.5916725Z 2026-07-26 19:40:37,274 dell-inspiron-5502-c28053 ERROR: DEVICE CONNECTOR: Error connecting to serial logging server. Retrying in the background...
+2026-07-26T19:40:57.7311187Z 2026-07-26 19:40:49,548 dell-inspiron-5502-c28053 INFO: DEVICE CONNECTOR: MAAS: Fixing EFI boot order before provisioning
+2026-07-26T19:41:08.2610346Z 2026-07-26 19:41:01,836 dell-inspiron-5502-c28053 INFO: DEVICE CONNECTOR: MAAS: Releasing node dell-inspiron-5502-c28053
+2026-07-26T19:41:28.7362274Z 2026-07-26 19:41:19,591 dell-inspiron-5502-c28053 INFO: DEVICE CONNECTOR: MAAS: Successfully released node dell-inspiron-5502-c28053
+2026-07-26T19:41:28.7363564Z 2026-07-26 19:41:23,628 dell-inspiron-5502-c28053 WARNING: DEVICE CONNECTOR: MAAS: 'default_disks' and/or 'disks' unspecified; setting default storage layout to flat
+2026-07-26T19:41:38.8145556Z 2026-07-26 19:41:28,565 dell-inspiron-5502-c28053 INFO: DEVICE CONNECTOR: MAAS: Acquiring node
+2026-07-26T19:41:48.9117364Z 2026-07-26 19:41:41,948 dell-inspiron-5502-c28053 INFO: DEVICE CONNECTOR: MAAS: Starting node dell-inspiron-5502-c28053 with distro noble
+2026-07-26T19:42:09.1208155Z 2026-07-26 19:42:03,279 dell-inspiron-5502-c28053 INFO: DEVICE CONNECTOR: MAAS: Timeout value: 60 minutes.
+2026-07-26T19:43:10.0644149Z 2026-07-26 19:43:03,329 dell-inspiron-5502-c28053 INFO: DEVICE CONNECTOR: MAAS: 1 minutes passed since deployment.
+2026-07-26T19:44:11.1280843Z 2026-07-26 19:44:07,316 dell-inspiron-5502-c28053 INFO: DEVICE CONNECTOR: MAAS: 2 minutes passed since deployment.
+2026-07-26T19:45:22.8565017Z 2026-07-26 19:45:11,161 dell-inspiron-5502-c28053 INFO: DEVICE CONNECTOR: MAAS: 3 minutes passed since deployment.
+2026-07-26T19:46:24.7077812Z 2026-07-26 19:46:15,146 dell-inspiron-5502-c28053 INFO: DEVICE CONNECTOR: MAAS: 4 minutes passed since deployment.
+2026-07-26T19:47:31.7207022Z 2026-07-26 19:47:19,033 dell-inspiron-5502-c28053 INFO: DEVICE CONNECTOR: MAAS: 5 minutes passed since deployment.
+2026-07-26T19:48:33.4589204Z 2026-07-26 19:48:22,936 dell-inspiron-5502-c28053 INFO: DEVICE CONNECTOR: MAAS: 6 minutes passed since deployment.
+2026-07-26T19:49:33.1257546Z 2026-07-26 19:49:26,762 dell-inspiron-5502-c28053 INFO: DEVICE CONNECTOR: MAAS: 7 minutes passed since deployment.
+2026-07-26T19:50:36.2259514Z 2026-07-26 19:50:30,696 dell-inspiron-5502-c28053 INFO: DEVICE CONNECTOR: MAAS: 8 minutes passed since deployment.
+2026-07-26T19:51:47.2613862Z 2026-07-26 19:51:34,759 dell-inspiron-5502-c28053 INFO: DEVICE CONNECTOR: MAAS: 9 minutes passed since deployment.
+2026-07-26T19:52:49.6541700Z 2026-07-26 19:52:38,865 dell-inspiron-5502-c28053 INFO: DEVICE CONNECTOR: MAAS: 10 minutes passed since deployment.
+2026-07-26T19:54:04.2314937Z 2026-07-26 19:53:42,950 dell-inspiron-5502-c28053 INFO: DEVICE CONNECTOR: MAAS: 11 minutes passed since deployment.
+2026-07-26T19:54:57.3081845Z 2026-07-26 19:54:46,956 dell-inspiron-5502-c28053 INFO: DEVICE CONNECTOR: MAAS: 12 minutes passed since deployment.
+2026-07-26T19:55:58.7960142Z 2026-07-26 19:55:50,929 dell-inspiron-5502-c28053 INFO: DEVICE CONNECTOR: MAAS: 13 minutes passed since deployment.
+2026-07-26T19:57:11.8581891Z 2026-07-26 19:56:55,175 dell-inspiron-5502-c28053 INFO: DEVICE CONNECTOR: MAAS: 14 minutes passed since deployment.
+2026-07-26T19:58:16.1286076Z 2026-07-26 19:57:59,257 dell-inspiron-5502-c28053 INFO: DEVICE CONNECTOR: MAAS: 15 minutes passed since deployment.
+2026-07-26T19:59:07.3841836Z 2026-07-26 19:59:03,220 dell-inspiron-5502-c28053 INFO: DEVICE CONNECTOR: MAAS: 16 minutes passed since deployment.
+2026-07-26T20:00:18.1612356Z 2026-07-26 20:00:07,138 dell-inspiron-5502-c28053 INFO: DEVICE CONNECTOR: MAAS: 17 minutes passed since deployment.
+2026-07-26T20:01:18.7301132Z 2026-07-26 20:01:11,115 dell-inspiron-5502-c28053 INFO: DEVICE CONNECTOR: MAAS: 18 minutes passed since deployment.
+2026-07-26T20:02:21.6778980Z 2026-07-26 20:02:15,156 dell-inspiron-5502-c28053 INFO: DEVICE CONNECTOR: MAAS: 19 minutes passed since deployment.
+2026-07-26T20:03:33.2986782Z 2026-07-26 20:03:19,072 dell-inspiron-5502-c28053 INFO: DEVICE CONNECTOR: MAAS: 20 minutes passed since deployment.
+2026-07-26T20:04:35.8505800Z 2026-07-26 20:04:23,016 dell-inspiron-5502-c28053 INFO: DEVICE CONNECTOR: MAAS: 21 minutes passed since deployment.
+2026-07-26T20:05:44.0237697Z 2026-07-26 20:05:26,810 dell-inspiron-5502-c28053 INFO: DEVICE CONNECTOR: MAAS: 22 minutes passed since deployment.
+2026-07-26T20:06:34.6834988Z 2026-07-26 20:06:31,064 dell-inspiron-5502-c28053 INFO: DEVICE CONNECTOR: MAAS: 23 minutes passed since deployment.
+2026-07-26T20:07:46.3088449Z 2026-07-26 20:07:35,140 dell-inspiron-5502-c28053 INFO: DEVICE CONNECTOR: MAAS: 24 minutes passed since deployment.
+2026-07-26T20:08:47.8886523Z 2026-07-26 20:08:39,366 dell-inspiron-5502-c28053 INFO: DEVICE CONNECTOR: MAAS: 25 minutes passed since deployment.
+2026-07-26T20:09:48.6506835Z 2026-07-26 20:09:43,436 dell-inspiron-5502-c28053 INFO: DEVICE CONNECTOR: MAAS: 26 minutes passed since deployment.
+2026-07-26T20:10:59.6185015Z 2026-07-26 20:10:47,490 dell-inspiron-5502-c28053 INFO: DEVICE CONNECTOR: MAAS: 27 minutes passed since deployment.
+2026-07-26T20:12:01.6785152Z 2026-07-26 20:11:51,442 dell-inspiron-5502-c28053 INFO: DEVICE CONNECTOR: MAAS: 28 minutes passed since deployment.
+2026-07-26T20:13:04.6469125Z 2026-07-26 20:12:55,374 dell-inspiron-5502-c28053 INFO: DEVICE CONNECTOR: MAAS: 29 minutes passed since deployment.
+2026-07-26T20:14:06.4058615Z 2026-07-26 20:13:59,244 dell-inspiron-5502-c28053 INFO: DEVICE CONNECTOR: MAAS: 30 minutes passed since deployment.
+2026-07-26T20:15:09.4854898Z 2026-07-26 20:15:03,285 dell-inspiron-5502-c28053 INFO: DEVICE CONNECTOR: MAAS: 31 minutes passed since deployment.
+2026-07-26T20:16:21.7797703Z 2026-07-26 20:16:07,664 dell-inspiron-5502-c28053 INFO: DEVICE CONNECTOR: MAAS: 32 minutes passed since deployment.
+2026-07-26T20:17:24.4933447Z 2026-07-26 20:17:12,777 dell-inspiron-5502-c28053 INFO: DEVICE CONNECTOR: MAAS: 33 minutes passed since deployment.
+2026-07-26T20:18:22.2434171Z 2026-07-26 20:18:16,736 dell-inspiron-5502-c28053 INFO: DEVICE CONNECTOR: MAAS: 34 minutes passed since deployment.
+2026-07-26T20:19:38.7474019Z 2026-07-26 20:19:20,712 dell-inspiron-5502-c28053 INFO: DEVICE CONNECTOR: MAAS: 35 minutes passed since deployment.
+2026-07-26T20:20:40.1387048Z 2026-07-26 20:20:24,818 dell-inspiron-5502-c28053 INFO: DEVICE CONNECTOR: MAAS: 36 minutes passed since deployment.
+2026-07-26T20:21:31.3458104Z 2026-07-26 20:21:28,776 dell-inspiron-5502-c28053 INFO: DEVICE CONNECTOR: MAAS: 37 minutes passed since deployment.
+2026-07-26T20:22:43.7985059Z 2026-07-26 20:22:32,785 dell-inspiron-5502-c28053 INFO: DEVICE CONNECTOR: MAAS: 38 minutes passed since deployment.
+2026-07-26T20:23:45.4025618Z 2026-07-26 20:23:36,968 dell-inspiron-5502-c28053 INFO: DEVICE CONNECTOR: MAAS: 39 minutes passed since deployment.
+2026-07-26T20:24:47.9247544Z 2026-07-26 20:24:41,129 dell-inspiron-5502-c28053 INFO: DEVICE CONNECTOR: MAAS: 40 minutes passed since deployment.
+2026-07-26T20:25:53.5613242Z 2026-07-26 20:25:45,024 dell-inspiron-5502-c28053 INFO: DEVICE CONNECTOR: MAAS: 41 minutes passed since deployment.
+2026-07-26T20:26:54.7216563Z 2026-07-26 20:26:48,983 dell-inspiron-5502-c28053 INFO: DEVICE CONNECTOR: MAAS: 42 minutes passed since deployment.
+2026-07-26T20:28:05.4822496Z 2026-07-26 20:27:53,251 dell-inspiron-5502-c28053 INFO: DEVICE CONNECTOR: MAAS: 43 minutes passed since deployment.
+2026-07-26T20:29:07.1345909Z 2026-07-26 20:28:57,184 dell-inspiron-5502-c28053 INFO: DEVICE CONNECTOR: MAAS: 44 minutes passed since deployment.
+2026-07-26T20:30:08.7691427Z 2026-07-26 20:30:01,192 dell-inspiron-5502-c28053 INFO: DEVICE CONNECTOR: MAAS: 45 minutes passed since deployment.
+2026-07-26T20:31:26.7564052Z 2026-07-26 20:31:05,164 dell-inspiron-5502-c28053 INFO: DEVICE CONNECTOR: MAAS: 46 minutes passed since deployment.
+2026-07-26T20:32:18.2414207Z 2026-07-26 20:32:09,148 dell-inspiron-5502-c28053 INFO: DEVICE CONNECTOR: MAAS: 47 minutes passed since deployment.
+2026-07-26T20:33:19.9929654Z 2026-07-26 20:33:12,980 dell-inspiron-5502-c28053 INFO: DEVICE CONNECTOR: MAAS: 48 minutes passed since deployment.
+2026-07-26T20:34:22.4022693Z 2026-07-26 20:34:16,877 dell-inspiron-5502-c28053 INFO: DEVICE CONNECTOR: MAAS: 49 minutes passed since deployment.
+2026-07-26T20:35:36.5753795Z 2026-07-26 20:35:20,868 dell-inspiron-5502-c28053 INFO: DEVICE CONNECTOR: MAAS: 50 minutes passed since deployment.
+2026-07-26T20:36:37.2839143Z 2026-07-26 20:36:25,077 dell-inspiron-5502-c28053 INFO: DEVICE CONNECTOR: MAAS: 51 minutes passed since deployment.
+2026-07-26T20:37:49.1057331Z 2026-07-26 20:37:29,110 dell-inspiron-5502-c28053 INFO: DEVICE CONNECTOR: MAAS: 52 minutes passed since deployment.
+2026-07-26T20:38:50.2729074Z 2026-07-26 20:38:33,013 dell-inspiron-5502-c28053 INFO: DEVICE CONNECTOR: MAAS: 53 minutes passed since deployment.
+2026-07-26T20:39:52.5495019Z 2026-07-26 20:39:37,110 dell-inspiron-5502-c28053 INFO: DEVICE CONNECTOR: MAAS: 54 minutes passed since deployment.
+2026-07-26T20:40:43.5384090Z 2026-07-26 20:40:41,222 dell-inspiron-5502-c28053 INFO: DEVICE CONNECTOR: MAAS: 55 minutes passed since deployment.
+2026-07-26T20:41:55.1097823Z 2026-07-26 20:41:45,364 dell-inspiron-5502-c28053 INFO: DEVICE CONNECTOR: MAAS: 56 minutes passed since deployment.
+2026-07-26T20:42:56.4101190Z 2026-07-26 20:42:49,280 dell-inspiron-5502-c28053 INFO: DEVICE CONNECTOR: MAAS: 57 minutes passed since deployment.
+2026-07-26T20:43:06.5223608Z ##[endgroup]
+2026-07-26T20:43:06.5229210Z ##[group]Retrieve phase results to determine exit status
+2026-07-26T20:43:10.9123819Z ##[error]Testflinger provision phase failed
+2026-07-26T20:43:10.9124377Z ##[endgroup]
+2026-07-26T20:43:10.9126720Z ##[error]Process completed with exit code 1.
+2026-07-26T20:43:10.9168929Z ##[group]Run echo "::group::Waiting for job $JOB_ID to complete"
+2026-07-26T20:43:10.9169356Z echo "::group::Waiting for job $JOB_ID to complete"
+2026-07-26T20:43:10.9169871Z while true; do
+2026-07-26T20:43:10.9170144Z   JOB_STATUS="$(testflinger status $JOB_ID)"
+2026-07-26T20:43:10.9170514Z   if [[ "$JOB_STATUS" =~ ^(complete|cancelled)$ ]]; then
+2026-07-26T20:43:10.9170826Z     break
+2026-07-26T20:43:10.9171032Z   fi
+2026-07-26T20:43:10.9171237Z   sleep 10
+2026-07-26T20:43:10.9171450Z done
+2026-07-26T20:43:10.9171654Z echo "::endgroup::"
+2026-07-26T20:43:10.9186684Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-07-26T20:43:10.9187025Z env:
+2026-07-26T20:43:10.9187268Z   REUSABLE_WORKFLOW_REPO: inference-snaps-testing
+2026-07-26T20:43:10.9187969Z   REUSABLE_JOB_FILE: /home/ubuntu/actions-runner/_work/smollm2-snap-staging/smollm2-snap-staging/inference-snaps-testing/testflinger-jobs/test-snap.yaml
+2026-07-26T20:43:10.9188679Z   TESTFLINGER_SERVER: https://testflinger.canonical.com
+2026-07-26T20:43:10.9189022Z   TESTFLINGER_CLIENT_ID: inference-snaps
+2026-07-26T20:43:10.9189455Z   TESTFLINGER_SECRET_KEY: ***
+2026-07-26T20:43:10.9189883Z   JOB_ID: 01250141-2585-4dff-92b0-20ce2cfad5a2
+2026-07-26T20:43:10.9190301Z ##[endgroup]
+2026-07-26T20:43:10.9224562Z ##[group]Waiting for job 01250141-2585-4dff-92b0-20ce2cfad5a2 to complete
+2026-07-26T20:43:57.8128657Z ##[endgroup]
+2026-07-26T20:43:57.8392788Z Post job cleanup.
+2026-07-26T20:43:57.8453942Z Post job cleanup.
+2026-07-26T20:43:57.9504803Z [command]/usr/bin/git version
+2026-07-26T20:43:57.9548097Z git version 2.43.0
+2026-07-26T20:43:57.9593432Z Temporarily overriding HOME='/home/ubuntu/actions-runner/_work/_temp/0054f1ea-da49-4807-9c9c-ff5c7ec904ac' before making global git config changes
+2026-07-26T20:43:57.9594461Z Adding repository directory to the temporary git global config as a safe directory
+2026-07-26T20:43:57.9597613Z [command]/usr/bin/git config --global --add safe.directory /home/ubuntu/actions-runner/_work/smollm2-snap-staging/smollm2-snap-staging/inference-snaps-testing
+2026-07-26T20:43:57.9633161Z Removing SSH command configuration
+2026-07-26T20:43:57.9638429Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-07-26T20:43:57.9678158Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-07-26T20:43:57.9925176Z Removing HTTP extra header
+2026-07-26T20:43:57.9929086Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-07-26T20:43:57.9965372Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-07-26T20:43:58.0265983Z Removing includeIf entries pointing to credentials config files
+2026-07-26T20:43:58.0271506Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-07-26T20:43:58.0298483Z includeif.gitdir:/home/ubuntu/actions-runner/_work/smollm2-snap-staging/smollm2-snap-staging/inference-snaps-testing/.git.path
+2026-07-26T20:43:58.0299601Z includeif.gitdir:/home/ubuntu/actions-runner/_work/smollm2-snap-staging/smollm2-snap-staging/inference-snaps-testing/.git/worktrees/*.path
+2026-07-26T20:43:58.0302602Z includeif.gitdir:/github/workspace/inference-snaps-testing/.git.path
+2026-07-26T20:43:58.0303144Z includeif.gitdir:/github/workspace/inference-snaps-testing/.git/worktrees/*.path
+2026-07-26T20:43:58.0309641Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/ubuntu/actions-runner/_work/smollm2-snap-staging/smollm2-snap-staging/inference-snaps-testing/.git.path
+2026-07-26T20:43:58.0333573Z /home/ubuntu/actions-runner/_work/_temp/git-credentials-061ad5a7-49ae-4986-b666-e78b8fc585a8.config
+2026-07-26T20:43:58.0346046Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/ubuntu/actions-runner/_work/smollm2-snap-staging/smollm2-snap-staging/inference-snaps-testing/.git.path /home/ubuntu/actions-runner/_work/_temp/git-credentials-061ad5a7-49ae-4986-b666-e78b8fc585a8.config
+2026-07-26T20:43:58.0385917Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/ubuntu/actions-runner/_work/smollm2-snap-staging/smollm2-snap-staging/inference-snaps-testing/.git/worktrees/*.path
+2026-07-26T20:43:58.0411107Z /home/ubuntu/actions-runner/_work/_temp/git-credentials-061ad5a7-49ae-4986-b666-e78b8fc585a8.config
+2026-07-26T20:43:58.0421338Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/ubuntu/actions-runner/_work/smollm2-snap-staging/smollm2-snap-staging/inference-snaps-testing/.git/worktrees/*.path /home/ubuntu/actions-runner/_work/_temp/git-credentials-061ad5a7-49ae-4986-b666-e78b8fc585a8.config
+2026-07-26T20:43:58.0463699Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/inference-snaps-testing/.git.path
+2026-07-26T20:43:58.0491873Z /github/runner_temp/git-credentials-061ad5a7-49ae-4986-b666-e78b8fc585a8.config
+2026-07-26T20:43:58.0505959Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/inference-snaps-testing/.git.path /github/runner_temp/git-credentials-061ad5a7-49ae-4986-b666-e78b8fc585a8.config
+2026-07-26T20:43:58.0548186Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/inference-snaps-testing/.git/worktrees/*.path
+2026-07-26T20:43:58.0575822Z /github/runner_temp/git-credentials-061ad5a7-49ae-4986-b666-e78b8fc585a8.config
+2026-07-26T20:43:58.0584091Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/inference-snaps-testing/.git/worktrees/*.path /github/runner_temp/git-credentials-061ad5a7-49ae-4986-b666-e78b8fc585a8.config
+2026-07-26T20:43:58.0626170Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-07-26T20:43:58.0880717Z Removing credentials config '/home/ubuntu/actions-runner/_work/_temp/git-credentials-061ad5a7-49ae-4986-b666-e78b8fc585a8.config'
+2026-07-26T20:43:58.1050313Z Cleaning up orphan processes
