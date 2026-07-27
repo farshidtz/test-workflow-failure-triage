@@ -82,7 +82,9 @@ jobs:
 
 
           echo "## Triage Summary" >> "${GITHUB_STEP_SUMMARY}"
-          echo -e "\n${SUMMARY}" >> "${GITHUB_STEP_SUMMARY}\n"
+          echo "" >> "${GITHUB_STEP_SUMMARY}"
+          echo -e "${SUMMARY}" >> "${GITHUB_STEP_SUMMARY}"
+          echo "" >> "${GITHUB_STEP_SUMMARY}"
 
           if [[ "${HAS_INFRA_ERR}" == "true" ]]; then
             echo -e "\nInfrastructure failures detected. Re-running failed jobs..."
