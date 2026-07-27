@@ -65,6 +65,7 @@ jobs:
 
             LOGS=$(gh api "repos/${REPO}/actions/jobs/${JOB_ID}/logs")
 
+            set +o pipefail
             if echo "${LOGS}" | grep -qE "${INFRA_PATTERN_RE}"; then
               MATCHED=$(echo "${LOGS}" | grep -oE "${INFRA_PATTERN_RE}" | head -1)
               echo "==> INFRA failure: '${MATCHED}'"
@@ -74,6 +75,7 @@ jobs:
               SUMMARY="${SUMMARY}\n- [NON-INFRA] ${JOB_NAME}: no infra pattern matched"
               ALL_INFRA=false
             fi
+            set -o pipefail
           done < <(echo "${FAILED_JOBS}" | jq -c '.[]')
 
           echo ""
