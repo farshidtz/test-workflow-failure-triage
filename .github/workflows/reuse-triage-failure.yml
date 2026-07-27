@@ -110,16 +110,17 @@ jobs:
       - name: Write job summary
         if: always()
         env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           WORKFLOW_RUN_JSON: "${{ inputs.workflow-run }}"
+          RUN_NUMBER: ${{ fromJson(inputs.workflow-run).run_number }}
+          RUN_URL: ${{ fromJson(inputs.workflow-run).html_url }}
+          WORKFLOW_NAME: "${{ fromJson(inputs.workflow-run).name }}"
+          AUTHOR: ${{ fromJson(inputs.workflow-run).actor.login }}
+          ATTEMPT: ${{ fromJson(inputs.workflow-run).run_attempt }}
+          HEAD_BRANCH: ${{ fromJson(inputs.workflow-run).head_branch }}
+          HEAD_SHA: ${{ fromJson(inputs.workflow-run).head_sha }}
+          REPO: ${{ fromJson(inputs.workflow-run).repository.full_name }}
         run: |
-          RUN_NUMBER=$(echo "${WORKFLOW_RUN_JSON}" | jq -r '.run_number')
-          RUN_URL=$(echo "${WORKFLOW_RUN_JSON}" | jq -r '.html_url')
-          WORKFLOW_NAME=$(echo "${WORKFLOW_RUN_JSON}" | jq -r '.name')
-          AUTHOR=$(echo "${WORKFLOW_RUN_JSON}" | jq -r '.actor.login')
-          ATTEMPT=$(echo "${WORKFLOW_RUN_JSON}" | jq -r '.run_attempt')
-          HEAD_BRANCH=$(echo "${WORKFLOW_RUN_JSON}" | jq -r '.head_branch')
-          HEAD_SHA=$(echo "${WORKFLOW_RUN_JSON}" | jq -r '.head_sha')
-
           echo "### Triage Details" >> "${GITHUB_STEP_SUMMARY}"
           echo "" >> "${GITHUB_STEP_SUMMARY}"
           echo "| Detail | Value |" >> "${GITHUB_STEP_SUMMARY}"
@@ -133,7 +134,7 @@ jobs:
           PR_COUNT=$(echo "${WORKFLOW_RUN_JSON}" | jq '.pull_requests | length')
           if [[ "${PR_COUNT}" -gt 0 ]]; then
             PR_NUMBER=$(echo "${WORKFLOW_RUN_JSON}" | jq -r '.pull_requests[0].number')
-            PR_TITLE=$(echo "${WORKFLOW_RUN_JSON}" | jq -r '.pull_requests[0].title')
+            PR_TITLE=$(gh api "repos/${REPO}/pulls/${PR_NUMBER}" --jq '.title')
             echo "| PR | [#${PR_NUMBER}: ${PR_TITLE}](../../pull/${PR_NUMBER}) |" >> "${GITHUB_STEP_SUMMARY}"
           fi
 
