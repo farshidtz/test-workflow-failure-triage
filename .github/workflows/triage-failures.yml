@@ -1,4 +1,4 @@
-name: Triage Workflow Failures
+name: Triage Failures
 
 on:
   workflow_run:
@@ -10,6 +10,6 @@ permissions:
 
 jobs:
   triage:
-    uses: ./.github/workflows/reuse-triage-failure.yml
+    uses: ./.github/workflows/reuse-triage-failures.yml
     with:
       workflow-run: "${{ toJson(github.event.workflow_run) }}"

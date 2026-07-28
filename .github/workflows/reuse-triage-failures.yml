@@ -38,7 +38,7 @@ on:
 
 jobs:
   triage:
-    name: Triage Job Failures
+    name: Triage job failures
     if: |
       fromJson(inputs.workflow-run).conclusion == 'failure' &&
       fromJson(inputs.workflow-run).run_attempt <= 3
