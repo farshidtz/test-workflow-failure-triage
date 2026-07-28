@@ -78,8 +78,11 @@ jobs:
           HAS_INFRA_ERR=false
           SUMMARY=""
 
+          # Load jobs into array
+          mapfile -t JOBS < <(echo "${FAILED_JOBS}" | jq -c '.[]')
+
           # Inspect each failed job
-          while IFS= read -r JOB; do
+          for JOB in "${JOBS[@]}"; do
             JOB_ID=$(echo "${JOB}" | jq -r '.id')
             JOB_NAME=$(echo "${JOB}" | jq -r '.name')
             echo -e "\nInspecting: ${JOB_NAME} (id=${JOB_ID})"
@@ -98,7 +101,7 @@ jobs:
               echo "NON-INFRA failure: will not auto-retry"
               SUMMARY="${SUMMARY}\n- ❌ ${JOB_NAME}: no infra pattern matched"
             fi
-          done < <(echo "${FAILED_JOBS}" | jq -c '.[]')
+          done
 
           echo "has_infra_err=${HAS_INFRA_ERR}" >> "${GITHUB_OUTPUT}"
           echo "summary=${SUMMARY}" >> "${GITHUB_OUTPUT}"
